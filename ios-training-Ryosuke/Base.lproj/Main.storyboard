@@ -64,6 +64,9 @@
                                         <rect key="frame" x="98.333333333333314" y="0.0" width="98" height="34.333333333333336"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Reload"/>
+                                        <connections>
+                                            <action selector="reload:" destination="BYZ-38-t0r" eventType="touchUpInside" id="d9O-04-3BU"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -80,6 +83,9 @@
                             <constraint firstItem="DG3-vK-cuU" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="i5v-uO-gkC"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="weatherImage" destination="hEV-dA-f4T" id="ifp-VI-tfj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
