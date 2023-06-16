@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     
     @IBAction func reload(_ sender: Any) {
         weather = YumemiWeather.fetchWeatherCondition()
-        weatherImage.image = UIImage(named: weather)
+        weatherImage.image = UIImage(named: weather)?.withRenderingMode(.alwaysTemplate)
         if(weather == "sunny") {
             weatherImage.tintColor = .red
         } else if(weather == "cloudy") {

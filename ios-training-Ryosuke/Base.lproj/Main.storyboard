@@ -22,7 +22,6 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hEV-dA-f4T">
                                         <rect key="frame" x="0.0" y="0.0" width="196.33333333333334" height="196.33333333333334"/>
-                                        <color key="backgroundColor" name="Blue"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="hEV-dA-f4T" secondAttribute="height" multiplier="1:1" id="jaF-LF-Si6"/>
                                         </constraints>
