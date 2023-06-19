@@ -7,28 +7,26 @@
 
 import UIKit
 import YumemiWeather
-class WeatherViewController: UIViewController {
+class WeatherViewController: UIViewController, WeatherModelDelegate {
     
     @IBOutlet private weak var weatherImage: UIImageView!
     
+    private let weatherModel = WeatherModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        weatherModel.delegate = self
     }
     
     @IBAction private func close(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
-
-    @IBAction func close(_ sender: Any) {
-        let blackVC = BlackViewController()
-        blackVC.modalPresentationStyle = .fullScreen
-        self.present(blackVC, animated: true, completion: nil)
+    @IBAction private func reload(_ sender: Any) {
+        weatherModel.fetchWeatherCondition()
     }
     
-    @IBAction private func reload(_ sender: Any) {
-        var weather: String = ""
-        weather = YumemiWeather.fetchWeatherCondition()
+    func didFetchWeatherCondition(_ weather: String) {
         weatherImage.image = UIImage(named: weather)?.withRenderingMode(.alwaysTemplate)
         if weather == "sunny" {
             weatherImage.tintColor = .red
