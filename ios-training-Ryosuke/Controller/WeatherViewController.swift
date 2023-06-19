@@ -25,6 +25,13 @@ class WeatherViewController: UIViewController {
     @IBAction private func reload(_ sender: Any) {
         weatherModel.fetchWeatherCondition()
     }
+    
+    func makeAlertController() -> UIAlertController {
+        let alertController = UIAlertController(title: "予期せぬエラー", message: "OKボタンを押して下さい", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alertController.addAction(okAction)
+        return alertController
+    }
 }
 
 extension WeatherViewController: WeatherModelDelegate {
@@ -37,5 +44,10 @@ extension WeatherViewController: WeatherModelDelegate {
         } else if weather == "rainy" {
             weatherImage.tintColor = .blue
         }
+    }
+    
+    func didFetchWeatherCondition(_ error: Error) {
+        let alertController = makeAlertController()
+        present(alertController, animated: true, completion: nil)
     }
 }
