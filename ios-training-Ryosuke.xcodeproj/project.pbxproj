@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E32EE1EA2A3FE6A600B15554 /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */; };
 		E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151B2A36C1460012E264 /* AppDelegate.swift */; };
 		E3A4151E2A36C1460012E264 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151D2A36C1460012E264 /* SceneDelegate.swift */; };
 		E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151F2A36C1460012E264 /* WeatherViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
 		E3A415182A36C1460012E264 /* ios-training-Ryosuke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-training-Ryosuke.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A4151B2A36C1460012E264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3A4151D2A36C1460012E264 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				E3A4151B2A36C1460012E264 /* AppDelegate.swift */,
 				E3A4151D2A36C1460012E264 /* SceneDelegate.swift */,
 				E3A4151F2A36C1460012E264 /* WeatherViewController.swift */,
+				E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */,
 				E3A415212A36C1460012E264 /* Main.storyboard */,
 				E3A415242A36C1460012E264 /* Assets.xcassets */,
 				E3A415262A36C1470012E264 /* LaunchScreen.storyboard */,
@@ -167,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E32EE1EA2A3FE6A600B15554 /* BlackViewController.swift in Sources */,
 				E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */,
 				E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */,
 				E3A4151E2A36C1460012E264 /* SceneDelegate.swift in Sources */,

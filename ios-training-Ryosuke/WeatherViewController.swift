@@ -16,6 +16,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+
+    @IBAction func close(_ sender: Any) {
+        let blackVC = BlackViewController()
+        blackVC.modalPresentationStyle = .fullScreen
+        self.present(blackVC, animated: true, completion: nil)
+    }
+    
     @IBAction private func reload(_ sender: Any) {
         var weather: String = ""
         weather = YumemiWeather.fetchWeatherCondition()
