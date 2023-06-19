@@ -12,11 +12,15 @@ class BlackViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black 
+        view.backgroundColor = .black
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.dismiss(animated: true, completion: nil)
+        // 画面表示直後の処理を書く
+        let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
+        let nextVC = storyboard.instantiateViewController(withIdentifier: "WeatherView")
+        nextVC.modalPresentationStyle = .fullScreen
+        present(nextVC, animated: true, completion: nil)
     }
 }
