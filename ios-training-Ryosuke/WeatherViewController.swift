@@ -7,16 +7,15 @@
 
 import UIKit
 import YumemiWeather
-class ViewController: UIViewController {
+class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
-    @IBAction func close(_ sender: Any) {
+    @IBAction private func close(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
     
