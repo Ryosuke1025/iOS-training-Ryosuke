@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import YumemiWeather
+
 class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
