@@ -7,7 +7,7 @@
 
 import UIKit
 import YumemiWeather
-class WeatherViewController: UIViewController, WeatherModelDelegate {
+class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
     
@@ -25,7 +25,9 @@ class WeatherViewController: UIViewController, WeatherModelDelegate {
     @IBAction private func reload(_ sender: Any) {
         weatherModel.fetchWeatherCondition()
     }
-    
+}
+
+extension WeatherViewController: WeatherModelDelegate {
     func didFetchWeatherCondition(_ weather: String) {
         weatherImage.image = UIImage(named: weather)?.withRenderingMode(.alwaysTemplate)
         if weather == "sunny" {
