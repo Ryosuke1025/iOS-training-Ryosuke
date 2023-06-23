@@ -9,4 +9,3 @@ struct RequestModel: Codable {
     let area: String
     let date: String
 }
-
