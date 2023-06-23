@@ -9,7 +9,6 @@ import UIKit
 import YumemiWeather
 class ViewController: UIViewController {
     
-    var weather: String = ""
     @IBOutlet private weak var weatherImage: UIImageView!
     
     override func viewDidLoad() {
@@ -18,6 +17,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction private func reload(_ sender: Any) {
+        var weather: String = ""
         weather = YumemiWeather.fetchWeatherCondition()
         weatherImage.image = UIImage(named: weather)?.withRenderingMode(.alwaysTemplate)
         if weather == "sunny" {
