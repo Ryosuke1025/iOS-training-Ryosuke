@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 final class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
