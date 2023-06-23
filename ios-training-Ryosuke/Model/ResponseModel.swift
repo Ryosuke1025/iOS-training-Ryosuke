@@ -6,8 +6,15 @@
 //
 
 struct ResponnseModel: Codable {
-    var max_temperature: Int
+    var maxTemperature: Int
     var date: String
-    var min_temperature: Int
+    var minTemperature: Int
     var weather_condition: String
+    
+    enum CodingKeys: String, CodingKey {
+        case maxTemperature = "max_temperature"
+        case date
+        case minTemperature = "min_temperature"
+        case weather_condition
+    }
 }

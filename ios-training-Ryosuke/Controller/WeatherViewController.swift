@@ -46,8 +46,8 @@ extension WeatherViewController: WeatherModelDelegate {
         } else if response.weather_condition == "rainy" {
             weatherImage.tintColor = .blue
         }
-        maxTemperature.text = String(response.max_temperature)
-        minTemperature.text = String(response.min_temperature)
+        maxTemperature.text = String(response.maxTemperature)
+        minTemperature.text = String(response.minTemperature)
     }
     
     func failedFetchWeatherCondition() {
