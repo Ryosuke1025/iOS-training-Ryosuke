@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E32EE1EA2A3FE6A600B15554 /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */; };
+		E32EE1EC2A40016F00B15554 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32EE1EB2A40016F00B15554 /* WeatherModel.swift */; };
 		E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151B2A36C1460012E264 /* AppDelegate.swift */; };
 		E3A4151E2A36C1460012E264 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151D2A36C1460012E264 /* SceneDelegate.swift */; };
 		E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151F2A36C1460012E264 /* WeatherViewController.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackViewController.swift; sourceTree = "<group>"; };
+		E32EE1EB2A40016F00B15554 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		E3A415182A36C1460012E264 /* ios-training-Ryosuke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-training-Ryosuke.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A4151B2A36C1460012E264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3A4151D2A36C1460012E264 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +43,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E32EE1ED2A400A1800B15554 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */,
+				E3A4151F2A36C1460012E264 /* WeatherViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E32EE1EE2A400A3C00B15554 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E32EE1EB2A40016F00B15554 /* WeatherModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E32EE1F22A400A7C00B15554 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E3A415262A36C1470012E264 /* LaunchScreen.storyboard */,
+				E3A415212A36C1460012E264 /* WeatherView.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E32EE1F32A400AB900B15554 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				E3A415242A36C1460012E264 /* Assets.xcassets */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		E32EE1F42A400B0C00B15554 /* AppConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				E3A4151B2A36C1460012E264 /* AppDelegate.swift */,
+				E3A4151D2A36C1460012E264 /* SceneDelegate.swift */,
+			);
+			path = AppConfiguration;
+			sourceTree = "<group>";
+		};
 		E3A4150F2A36C1460012E264 = {
 			isa = PBXGroup;
 			children = (
@@ -60,13 +105,11 @@
 		E3A4151A2A36C1460012E264 /* ios-training-Ryosuke */ = {
 			isa = PBXGroup;
 			children = (
-				E3A4151B2A36C1460012E264 /* AppDelegate.swift */,
-				E3A4151D2A36C1460012E264 /* SceneDelegate.swift */,
-				E3A4151F2A36C1460012E264 /* WeatherViewController.swift */,
-				E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */,
-				E3A415212A36C1460012E264 /* WeatherView.storyboard */,
-				E3A415242A36C1460012E264 /* Assets.xcassets */,
-				E3A415262A36C1470012E264 /* LaunchScreen.storyboard */,
+				E32EE1F42A400B0C00B15554 /* AppConfiguration */,
+				E32EE1EE2A400A3C00B15554 /* Model */,
+				E32EE1F22A400A7C00B15554 /* View */,
+				E32EE1ED2A400A1800B15554 /* Controller */,
+				E32EE1F32A400AB900B15554 /* Resource */,
 				E3A415292A36C1470012E264 /* Info.plist */,
 			);
 			path = "ios-training-Ryosuke";
@@ -171,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E32EE1EC2A40016F00B15554 /* WeatherModel.swift in Sources */,
 				E32EE1EA2A3FE6A600B15554 /* BlackViewController.swift in Sources */,
 				E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */,
 				E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */,
