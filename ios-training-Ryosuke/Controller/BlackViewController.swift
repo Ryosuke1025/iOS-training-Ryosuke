@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class BlackViewController: UIViewController {
+final class BlackViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

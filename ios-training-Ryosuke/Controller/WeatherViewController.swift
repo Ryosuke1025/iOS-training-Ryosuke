@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController {
+final class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
     @IBOutlet private weak var maxTemperature: UILabel!

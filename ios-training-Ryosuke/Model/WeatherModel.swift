@@ -12,7 +12,7 @@ protocol WeatherModelDelegate: AnyObject {
     func failedFetchWeatherCondition()
 }
 
-class WeatherModel {
+final class WeatherModel {
     weak var delegate: WeatherModelDelegate?
     
     func fetchWeatherCondition() {
