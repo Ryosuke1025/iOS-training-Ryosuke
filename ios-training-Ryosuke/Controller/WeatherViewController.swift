@@ -6,13 +6,16 @@
 //
 
 import UIKit
-import YumemiWeather
+
 class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
     
+    private let weatherModel = WeatherModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        weatherModel.delegate = self
     }
     
     @IBAction private func close(_ sender: Any) {
@@ -20,8 +23,12 @@ class WeatherViewController: UIViewController {
     }
     
     @IBAction private func reload(_ sender: Any) {
-        var weather: String = ""
-        weather = YumemiWeather.fetchWeatherCondition()
+        weatherModel.fetchWeatherCondition()
+    }
+}
+
+extension WeatherViewController: WeatherModelDelegate {
+    func didFetchWeatherCondition(_ weather: String) {
         weatherImage.image = UIImage(named: weather)?.withRenderingMode(.alwaysTemplate)
         if weather == "sunny" {
             weatherImage.tintColor = .red
