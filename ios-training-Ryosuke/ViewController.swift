@@ -24,7 +24,7 @@ class ViewController: UIViewController {
             weatherImage.tintColor = .red
         } else if weather == "cloudy" {
             weatherImage.tintColor = .gray
-        } else {
+        } else if weather == "rainy" {
             weatherImage.tintColor = .blue
         }
     }
