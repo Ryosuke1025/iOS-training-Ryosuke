@@ -10,8 +10,8 @@ import UIKit
 class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
-    @IBOutlet weak var maxTemperature: UILabel!
-    @IBOutlet weak var minTemperature: UILabel!
+    @IBOutlet private weak var maxTemperature: UILabel!
+    @IBOutlet private weak var minTemperature: UILabel!
     
     private let weatherModel = WeatherModel()
     
