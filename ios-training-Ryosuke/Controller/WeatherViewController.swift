@@ -35,13 +35,13 @@ class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController: WeatherModelDelegate {
-    func didFetchWeatherCondition(_ weather: String) {
-        weatherImage.image = UIImage(named: weather)?.withRenderingMode(.alwaysTemplate)
-        if weather == "sunny" {
+    func didFetchWeatherCondition(response: ResponnseModel) {
+        weatherImage.image = UIImage(named: response.weather_condition)?.withRenderingMode(.alwaysTemplate)
+        if response.weather_condition == "sunny" {
             weatherImage.tintColor = .red
-        } else if weather == "cloudy" {
+        } else if response.weather_condition == "cloudy" {
             weatherImage.tintColor = .gray
-        } else if weather == "rainy" {
+        } else if response.weather_condition == "rainy" {
             weatherImage.tintColor = .blue
         }
     }
