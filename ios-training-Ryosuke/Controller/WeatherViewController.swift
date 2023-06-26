@@ -38,8 +38,8 @@ final class WeatherViewController: UIViewController {
 
 extension WeatherViewController: WeatherModelDelegate {
     func didFetchWeatherCondition(response: YumemiWeatherResponseModel) {
-        weatherImage.image = UIImage(named: response.weather_condition.rawValue)?.withRenderingMode(.alwaysTemplate)
-        switch response.weather_condition {
+        weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
+        switch response.weatherCondition {
         case .sunny:
             weatherImage.tintColor = .red
         case .cloudy:
