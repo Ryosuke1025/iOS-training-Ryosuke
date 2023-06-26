@@ -86,8 +86,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="maxTemperature" destination="Wpt-w2-WYc" id="4Nc-um-Jtz"/>
-                        <outlet property="minTemperature" destination="5RH-Iz-hDj" id="zzy-LC-PVZ"/>
+                        <outlet property="maxTemperatureLabel" destination="Wpt-w2-WYc" id="DWd-2K-rE0"/>
+                        <outlet property="minTemperatureLabel" destination="5RH-Iz-hDj" id="3eH-7d-WUI"/>
                         <outlet property="weatherImage" destination="hEV-dA-f4T" id="ifp-VI-tfj"/>
                     </connections>
                 </viewController>

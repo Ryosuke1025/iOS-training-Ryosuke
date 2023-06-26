@@ -10,8 +10,8 @@ import UIKit
 final class WeatherViewController: UIViewController {
     
     @IBOutlet private weak var weatherImage: UIImageView!
-    @IBOutlet private weak var maxTemperature: UILabel!
-    @IBOutlet private weak var minTemperature: UILabel!
+    @IBOutlet private weak var maxTemperatureLabel: UILabel!
+    @IBOutlet private weak var minTemperatureLabel: UILabel!
     
     private let weatherModel = WeatherModel()
     
@@ -47,8 +47,8 @@ extension WeatherViewController: WeatherModelDelegate {
         case .rainy:
             weatherImage.tintColor = .blue
         }
-        maxTemperature.text = String(response.maxTemperature)
-        minTemperature.text = String(response.minTemperature)
+        maxTemperatureLabel.text = String(response.maxTemperature)
+        minTemperatureLabel.text = String(response.minTemperature)
     }
     
     func failedFetchWeatherCondition() {
