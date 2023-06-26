@@ -5,7 +5,7 @@
 //  Created by 須崎 良祐 on 2023/06/23.
 //
 
-struct YumemiWeatherRequestModel: Codable {
+struct YumemiWeatherRequestModel: Encodable {
     let area: String
     let date: String
 }

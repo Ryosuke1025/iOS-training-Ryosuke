@@ -5,7 +5,7 @@
 //  Created by 須崎 良祐 on 2023/06/23.
 //
 
-struct YumemiWeatherResponseModel: Codable {
+struct YumemiWeatherResponseModel: Decodable {
     var maxTemperature: Int
     var date: String
     var minTemperature: Int
@@ -19,7 +19,7 @@ struct YumemiWeatherResponseModel: Codable {
     }
 }
 
-enum WeatherCondition: String, Codable {
+enum WeatherCondition: String, Decodable {
     case sunny
     case cloudy
     case rainy
