@@ -46,7 +46,7 @@ extension WeatherViewController: WeatherModelDelegate {
         }
     }
     
-    func didFetchWeatherCondition() {
+    func failedFetchWeatherCondition() {
         let alertController = makeAlertController()
         present(alertController, animated: true, completion: nil)
     }
