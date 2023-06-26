@@ -41,11 +41,11 @@ extension WeatherViewController: WeatherModelDelegate {
         weatherImage.image = UIImage(named: response.weather_condition.rawValue)?.withRenderingMode(.alwaysTemplate)
         switch response.weather_condition {
         case .sunny:
-                weatherImage.tintColor = .red
+            weatherImage.tintColor = .red
         case .cloudy:
-                weatherImage.tintColor = .gray
+            weatherImage.tintColor = .gray
         case .rainy:
-                weatherImage.tintColor = .blue
+            weatherImage.tintColor = .blue
         }
         maxTemperature.text = String(response.maxTemperature)
         minTemperature.text = String(response.minTemperature)
