@@ -37,7 +37,7 @@ final class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController: WeatherModelDelegate {
-    func didFetchWeatherCondition(response: ResponnseModel) {
+    func didFetchWeatherCondition(response: ResponseModel) {
         weatherImage.image = UIImage(named: response.weather_condition.rawValue)?.withRenderingMode(.alwaysTemplate)
         switch response.weather_condition {
         case .sunny:

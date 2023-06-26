@@ -8,7 +8,7 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelDelegate: AnyObject {
-    func didFetchWeatherCondition(_ weather: String)
+    func didFetchWeatherCondition(response: ResponseModel)
     func failedFetchWeatherCondition()
 }
 
@@ -30,16 +30,16 @@ final class WeatherModel {
                     return
                 }
                 do {
-                    let response = try JSONDecoder().decode(ResponnseModel.self, from: responseData)
+                    let response = try JSONDecoder().decode(ResponseModel.self, from: responseData)
                     delegate?.didFetchWeatherCondition(response: response)
                 } catch {
                     print("レスポンスデータのデコードに失敗しました")
                 }
             } catch {
-                delegate?.didFetchWeatherCondition(error: CustomError.unknown)
+                delegate?.failedFetchWeatherCondition()
             }
         } catch {
-            delegate?.failedFetchWeatherCondition()
+            print("レスポンスデータのエンコードに失敗しました")
         }
     }
 }
