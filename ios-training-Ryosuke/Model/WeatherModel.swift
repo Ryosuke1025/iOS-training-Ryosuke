@@ -8,7 +8,7 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelDelegate: AnyObject {
-    func didFetchWeatherCondition(response: YumemiWeatherResponseModel)
+    func didFetchWeatherCondition(response: FetchWeatherResponse)
     func failedFetchWeatherCondition()
 }
 
@@ -17,7 +17,7 @@ final class WeatherModel {
     
     func fetchWeatherCondition() {
         do {
-            let request = YumemiWeatherRequestModel(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
+            let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
             guard let requestString = encode(request: request) else {
                 assertionFailure("Encode Failed")
                 return
@@ -33,7 +33,7 @@ final class WeatherModel {
         }
     }
     
-    private func encode(request: YumemiWeatherRequestModel) -> String? {
+    private func encode(request: FetchWeatherRequest) -> String? {
         guard let requestData = try? JSONEncoder().encode(request),
               let requestString = String(data: requestData, encoding: .utf8) else {
             return nil
@@ -41,11 +41,11 @@ final class WeatherModel {
         return requestString
     }
     
-    private func decode(responseString: String) -> YumemiWeatherResponseModel? {
+    private func decode(responseString: String) -> FetchWeatherResponse? {
         guard let responseData = responseString.data(using: .utf8) else {
             return nil
         }
-        let response = try? JSONDecoder().decode(YumemiWeatherResponseModel.self, from: responseData)
+        let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData)
         return response
     }
 }
