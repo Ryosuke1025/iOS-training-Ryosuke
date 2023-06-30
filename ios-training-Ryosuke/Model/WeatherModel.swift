@@ -8,13 +8,18 @@ import YumemiWeather
 
 protocol WeatherModelDelegate: AnyObject {
     func didFetchWeatherCondition(_ weather: String)
+    func failedFetchWeatherCondition()
 }
 
 class WeatherModel {
     weak var delegate: WeatherModelDelegate?
     
     func fetchWeatherCondition() {
-        let weather = YumemiWeather.fetchWeatherCondition()
-        delegate?.didFetchWeatherCondition(weather)
+        do {
+            let weather = try YumemiWeather.fetchWeatherCondition(at: "tokyo")
+            delegate?.didFetchWeatherCondition(weather)
+        } catch {
+            delegate?.failedFetchWeatherCondition()
+        }
     }
 }

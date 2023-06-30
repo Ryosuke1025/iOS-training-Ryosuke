@@ -17,7 +17,6 @@ class BlackViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // 画面表示直後の処理を書く
         let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
         let nextVC = storyboard.instantiateViewController(withIdentifier: "WeatherView")
         nextVC.modalPresentationStyle = .fullScreen
