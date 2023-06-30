@@ -16,6 +16,8 @@
 		E3A415252A36C1470012E264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3A415242A36C1460012E264 /* Assets.xcassets */; };
 		E3A415282A36C1470012E264 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3A415262A36C1470012E264 /* LaunchScreen.storyboard */; };
 		E3A415312A36D92E0012E264 /* YumemiWeather in Frameworks */ = {isa = PBXBuildFile; productRef = E3A415302A36D92E0012E264 /* YumemiWeather */; };
+		E3B137342A456D7800CEB5C5 /* RequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B137332A456D7800CEB5C5 /* RequestModel.swift */; };
+		E3B137362A456D8300CEB5C5 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B137352A456D8300CEB5C5 /* ResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		E3A415242A36C1460012E264 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E3A415272A36C1470012E264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E3A415292A36C1470012E264 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3B137332A456D7800CEB5C5 /* RequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestModel.swift; sourceTree = "<group>"; };
+		E3B137352A456D8300CEB5C5 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				E32EE1EB2A40016F00B15554 /* WeatherModel.swift */,
+				E3B137332A456D7800CEB5C5 /* RequestModel.swift */,
+				E3B137352A456D8300CEB5C5 /* ResponseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -218,7 +224,9 @@
 				E32EE1EA2A3FE6A600B15554 /* BlackViewController.swift in Sources */,
 				E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */,
 				E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */,
+				E3B137362A456D8300CEB5C5 /* ResponseModel.swift in Sources */,
 				E3A4151E2A36C1460012E264 /* SceneDelegate.swift in Sources */,
+				E3B137342A456D7800CEB5C5 /* RequestModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
