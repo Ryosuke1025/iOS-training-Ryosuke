@@ -10,7 +10,11 @@ import Combine
 
 final class WeatherViewController: UIViewController {
     
-    private var weatherModel = WeatherModelImpl()
+    private var weatherModel: WeatherModel!{
+        didSet {
+            weatherModel.delegate = self
+        }
+    }
     private var cancellables: Set<AnyCancellable> = []
     @IBOutlet private weak var weatherImage: UIImageView!
     @IBOutlet private weak var maxTemperatureLabel: UILabel!
@@ -22,7 +26,6 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        weatherModel.delegate = self
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             .filter { [weak self] _ in self?.presentedViewController == nil }
             .sink { [weak self] _ in
