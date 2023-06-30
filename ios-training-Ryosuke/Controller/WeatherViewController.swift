@@ -10,6 +10,8 @@ import Combine
 
 final class WeatherViewController: UIViewController {
     
+    private var weatherModel = WeatherModelImpl()
+    private var cancellables: Set<AnyCancellable> = []
     @IBOutlet private weak var weatherImage: UIImageView!
     @IBOutlet private weak var maxTemperatureLabel: UILabel!
     @IBOutlet private weak var minTemperatureLabel: UILabel!
