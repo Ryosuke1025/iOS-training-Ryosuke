@@ -18,8 +18,8 @@ final class BlackViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
-        let nextVC = storyboard.instantiateViewController(withIdentifier: "WeatherView")
-        nextVC.modalPresentationStyle = .fullScreen
-        present(nextVC, animated: true, completion: nil)
+        let weatherViewController = storyboard.instantiateViewController(withIdentifier: "WeatherView")
+        weatherViewController.modalPresentationStyle = .fullScreen
+        present(weatherViewController, animated: true, completion: nil)
     }
 }
