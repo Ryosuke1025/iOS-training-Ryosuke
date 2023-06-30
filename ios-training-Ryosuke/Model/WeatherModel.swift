@@ -18,28 +18,34 @@ final class WeatherModel {
     func fetchWeatherCondition() {
         do {
             let request = YumemiWeatherRequestModel(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
-            let requestString = try encode(request: request)
+            guard let requestString = encode(request: request) else {
+                assertionFailure("Encode Failed")
+                return
+            }
             let responseString = try YumemiWeather.fetchWeather(requestString)
-            let response = try decode(responseString: responseString)
+            guard let response = decode(responseString: responseString) else {
+                assertionFailure("Decode Failed")
+                return
+            }
             delegate?.didFetchWeatherCondition(response: response)
         } catch {
             delegate?.failedFetchWeatherCondition()
         }
     }
     
-    private func encode(request: YumemiWeatherRequestModel) throws -> String {
-        let requestData = try JSONEncoder().encode(request)
-        guard let requestString = String(data: requestData, encoding: .utf8) else {
-            throw EncodingError.invalidValue(request, EncodingError.Context(codingPath: [], debugDescription: "Request data could not be converted to a string."))
+    private func encode(request: YumemiWeatherRequestModel) -> String? {
+        guard let requestData = try? JSONEncoder().encode(request),
+              let requestString = String(data: requestData, encoding: .utf8) else {
+            return nil
         }
         return requestString
     }
     
-    private func decode(responseString: String) throws -> YumemiWeatherResponseModel {
+    private func decode(responseString: String) -> YumemiWeatherResponseModel? {
         guard let responseData = responseString.data(using: .utf8) else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Response string could not be converted to Data."))
+            return nil
         }
-        let response = try JSONDecoder().decode(YumemiWeatherResponseModel.self, from: responseData)
+        let response = try? JSONDecoder().decode(YumemiWeatherResponseModel.self, from: responseData)
         return response
     }
 }
