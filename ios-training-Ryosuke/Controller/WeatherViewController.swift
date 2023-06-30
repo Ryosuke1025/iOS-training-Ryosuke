@@ -22,10 +22,10 @@ final class WeatherViewController: UIViewController {
         super.viewDidLoad()
         weatherModel.delegate = self
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-                .sink { [weak self] _ in
-                    self?.weatherModel.fetchWeatherCondition()
-                }
-                .store(in: &cancellables)
+            .sink { [weak self] _ in
+                self?.weatherModel.fetchWeatherCondition()
+            }
+            .store(in: &cancellables)
     }
     
     @IBAction private func close(_ sender: Any) {
