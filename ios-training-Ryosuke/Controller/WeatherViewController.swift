@@ -14,7 +14,7 @@ final class WeatherViewController: UIViewController {
     @IBOutlet private weak var maxTemperatureLabel: UILabel!
     @IBOutlet private weak var minTemperatureLabel: UILabel!
     
-    private let weatherModel = WeatherModel()
+    private let weatherModel = WeatherModelImpl()
     
     private var cancellables: Set<AnyCancellable> = []
     

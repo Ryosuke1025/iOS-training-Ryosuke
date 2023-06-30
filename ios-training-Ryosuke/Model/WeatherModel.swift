@@ -12,7 +12,14 @@ protocol WeatherModelDelegate: AnyObject {
     func failedFetchWeatherCondition()
 }
 
-final class WeatherModel {
+protocol WeatherModel {
+    var delegate: WeatherModelDelegate? {get set}
+    func fetchWeatherCondition()
+    func encode(request: FetchWeatherRequest) -> String?
+    func decode(responseString: String) -> FetchWeatherResponse?
+}
+
+final class WeatherModelImpl: WeatherModel {
     weak var delegate: WeatherModelDelegate?
     
     func fetchWeatherCondition() {
@@ -33,7 +40,7 @@ final class WeatherModel {
         }
     }
     
-    private func encode(request: FetchWeatherRequest) -> String? {
+    func encode(request: FetchWeatherRequest) -> String? {
         guard let requestData = try? JSONEncoder().encode(request),
               let requestString = String(data: requestData, encoding: .utf8) else {
             return nil
@@ -41,7 +48,7 @@ final class WeatherModel {
         return requestString
     }
     
-    private func decode(responseString: String) -> FetchWeatherResponse? {
+    func decode(responseString: String) -> FetchWeatherResponse? {
         guard let responseData = responseString.data(using: .utf8) else {
             return nil
         }
