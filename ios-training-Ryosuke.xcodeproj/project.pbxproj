@@ -18,6 +18,7 @@
 		E3A415312A36D92E0012E264 /* YumemiWeather in Frameworks */ = {isa = PBXBuildFile; productRef = E3A415302A36D92E0012E264 /* YumemiWeather */; };
 		E3B137342A456D7800CEB5C5 /* RequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B137332A456D7800CEB5C5 /* RequestModel.swift */; };
 		E3B137362A456D8300CEB5C5 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B137352A456D8300CEB5C5 /* ResponseModel.swift */; };
+		E3B1373F2A525F3200CEB5C5 /* WeatherViewControllerUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1373E2A525F3200CEB5C5 /* WeatherViewControllerUnitTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		E3A415292A36C1470012E264 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3B137332A456D7800CEB5C5 /* RequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestModel.swift; sourceTree = "<group>"; };
 		E3B137352A456D8300CEB5C5 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		E3B1373E2A525F3200CEB5C5 /* WeatherViewControllerUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewControllerUnitTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				E32EE1ED2A400A1800B15554 /* Controller */,
 				E32EE1F32A400AB900B15554 /* Resource */,
 				E3A415292A36C1470012E264 /* Info.plist */,
+				E3B1373E2A525F3200CEB5C5 /* WeatherViewControllerUnitTest.swift */,
 			);
 			path = "ios-training-Ryosuke";
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 				E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */,
 				E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */,
 				E3B137362A456D8300CEB5C5 /* ResponseModel.swift in Sources */,
+				E3B1373F2A525F3200CEB5C5 /* WeatherViewControllerUnitTest.swift in Sources */,
 				E3A4151E2A36C1460012E264 /* SceneDelegate.swift in Sources */,
 				E3B137342A456D7800CEB5C5 /* RequestModel.swift in Sources */,
 			);

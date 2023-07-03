@@ -14,18 +14,28 @@ final class WeatherViewController: UIViewController {
     @IBOutlet private weak var weatherImage: UIImageView!
     @IBOutlet private weak var maxTemperatureLabel: UILabel!
     @IBOutlet private weak var minTemperatureLabel: UILabel!
-    private var weatherModel: WeatherModel! {
-        didSet {
-            weatherModel.delegate = self
-        }
+    private var weatherModel: WeatherModel
+    
+    init?(coder: NSCoder, weatherModel: WeatherModel) {
+        self.weatherModel = weatherModel
+        super.init(coder: coder)
     }
-    
-    private let weatherModel = WeatherModelImpl()
-    
-    private var cancellables: Set<AnyCancellable> = []
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    static func getInstance(weatherModel: WeatherModel) -> WeatherViewController? {
+        let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
+        let weatherViewController = storyboard.instantiateInitialViewController { coder in
+            WeatherViewController(coder: coder, weatherModel: weatherModel)
+        }
+        return weatherViewController
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        weatherModel.delegate = self
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             .filter { [weak self] _ in self?.presentedViewController == nil }
             .sink { [weak self] _ in
