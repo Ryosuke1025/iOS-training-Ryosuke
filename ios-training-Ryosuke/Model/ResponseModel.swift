@@ -5,7 +5,7 @@
 //  Created by 須崎 良祐 on 2023/06/23.
 //
 
-struct FetchWeatherResponse: Decodable {
+struct FetchWeatherResponse: Decodable, Equatable {
     var maxTemperature: Int
     var date: String
     var minTemperature: Int
