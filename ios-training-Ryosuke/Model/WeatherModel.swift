@@ -49,13 +49,10 @@ final class WeatherModelImpl: WeatherModel {
     }
     
     func decode(responseString: String) -> FetchWeatherResponse? {
-        print("decode function is called")
         guard let responseData = responseString.data(using: .utf8) else {
             return nil
         }
-        print("---------------------------------------")
         let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData)
-        print(response)
         return response
     }
 }
