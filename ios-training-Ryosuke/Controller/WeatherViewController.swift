@@ -18,10 +18,13 @@ final class WeatherViewController: UIViewController {
     
     private var cancellables: Set<AnyCancellable> = []
     
+    private var isShowingError = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         weatherModel.delegate = self
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .filter { [weak self] _ in self?.isShowingError == false }
             .sink { [weak self] _ in
                 self?.weatherModel.fetchWeatherCondition()
             }
@@ -38,7 +41,9 @@ final class WeatherViewController: UIViewController {
     
     func makeAlertController() -> UIAlertController {
         let alertController = UIAlertController(title: "予期せぬエラー", message: "OKボタンを押して下さい", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
+        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.isShowingError = false
+        }
         alertController.addAction(okAction)
         return alertController
     }
@@ -60,6 +65,7 @@ extension WeatherViewController: WeatherModelDelegate {
     }
     
     func failedFetchWeatherCondition() {
+        isShowingError = true
         let alertController = makeAlertController()
         present(alertController, animated: true, completion: nil)
     }
