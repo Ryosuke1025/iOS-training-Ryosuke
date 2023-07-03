@@ -9,16 +9,16 @@ import UIKit
 import Combine
 
 final class WeatherViewController: UIViewController {
-    
-    private var weatherModel: WeatherModel!{
-        didSet {
-            weatherModel.delegate = self
-        }
-    }
+
     private var cancellables: Set<AnyCancellable> = []
     @IBOutlet private weak var weatherImage: UIImageView!
     @IBOutlet private weak var maxTemperatureLabel: UILabel!
     @IBOutlet private weak var minTemperatureLabel: UILabel!
+    private var weatherModel: WeatherModel! {
+        didSet {
+            weatherModel.delegate = self
+        }
+    }
     
     private let weatherModel = WeatherModelImpl()
     
