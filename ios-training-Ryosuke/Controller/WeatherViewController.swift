@@ -14,7 +14,9 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
-    var weatherModel: WeatherModelProtocol
+
+    private var weatherModel: WeatherModel
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel
@@ -48,8 +50,8 @@ final class WeatherViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    // swiftlint:disable private_action
-    @IBAction func reload(_ sender: Any) {
+    @IBAction private func reload(_ sender: Any) {
+        indicator.startAnimating()
         weatherModel.fetchWeatherCondition()
     }
     // swiftlint:enable private_action
@@ -75,10 +77,12 @@ extension WeatherViewController: WeatherModelDelegate {
         }
         maxTemperatureLabel.text = String(response.maxTemperature)
         minTemperatureLabel.text = String(response.minTemperature)
+        indicator.stopAnimating()
     }
     
     func failedFetchWeatherCondition(weatherModel: WeatherModelProtocol) {
         let alertController = makeAlertController()
         present(alertController, animated: true, completion: nil)
+        indicator.stopAnimating()
     }
 }

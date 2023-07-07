@@ -23,11 +23,25 @@ final class WeatherModel: WeatherModelProtocol {
     weak var delegate: WeatherModelDelegate?
     
     func fetchWeatherCondition() {
-        do {
-            let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
-            guard let requestString = encode(request: request) else {
-                assertionFailure("Encode Failed")
-                return
+        DispatchQueue.global().async {
+            do {
+                let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
+                guard let requestString = self.encode(request: request) else {
+                    assertionFailure("Encode Failed")
+                    return
+                }
+                let responseString = try YumemiWeather.syncFetchWeather(requestString)
+                guard let response = self.decode(responseString: responseString) else {
+                    assertionFailure("Decode Failed")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.delegate?.didFetchWeatherCondition(response: response)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.delegate?.failedFetchWeatherCondition()
+                }
             }
             let responseString = try YumemiWeather.fetchWeather(requestString)
             guard let response = decode(responseString: responseString) else {
