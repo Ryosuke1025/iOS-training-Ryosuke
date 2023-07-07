@@ -60,9 +60,6 @@ class WeatherModelMock: WeatherModel {
     var weatherCondition: WeatherCondition!
     
     func fetchWeatherCondition() {
-        guard let weatherCondition = weatherCondition else {
-            fatalError("weatherConditionが空です")
-        }
         delegate?.didFetchWeatherCondition(response: .init(maxTemperature: 25, date:"2020-04-01T12:00:00+09:00" , minTemperature: 7, weatherCondition: weatherCondition))
     }
     
