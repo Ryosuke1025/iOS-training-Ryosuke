@@ -14,12 +14,9 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
-<<<<<<< HEAD
+
 
     private var weatherModel: WeatherModelProtocol
-=======
-    private var weatherModel: WeatherModel
->>>>>>> aee2242 ([Add] 呼び出す関数を変更して、incicatorを追加し、スレッド処理を用いて表示できるようにした)
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
@@ -41,11 +38,10 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        weatherModel.delegate = self
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             .filter { [weak self] _ in self?.presentedViewController == nil }
             .sink { [weak self] _ in
-                self?.weatherModel.fetchWeatherCondition()
+                self?.updateWeatherCondition()
             }
             .store(in: &cancellables)
     }
@@ -57,7 +53,7 @@ final class WeatherViewController: UIViewController {
     // swiftlint:disable private_action
     @IBAction func reload(_ sender: Any) {
         indicator.startAnimating()
-        weatherModel.fetchWeatherCondition()
+        updateWeatherCondition()
     }
     // swiftlint:enable private_action
     
@@ -69,25 +65,30 @@ final class WeatherViewController: UIViewController {
     }
 }
 
-extension WeatherViewController: WeatherModelDelegate {
-    func didFetchWeatherCondition(weatherModel: WeatherModelProtocol, response: FetchWeatherResponse) {
-        weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-        switch response.weatherCondition {
-        case .sunny:
-            weatherImage.tintColor = .red
-        case .cloudy:
-            weatherImage.tintColor = .gray
-        case .rainy:
-            weatherImage.tintColor = .blue
-        }
-        maxTemperatureLabel.text = String(response.maxTemperature)
-        minTemperatureLabel.text = String(response.minTemperature)
-        indicator.stopAnimating()
-    }
-    
-    func failedFetchWeatherCondition(weatherModel: WeatherModelProtocol) {
-        let alertController = makeAlertController()
-        present(alertController, animated: true, completion: nil)
-        indicator.stopAnimating()
+extension WeatherViewController {
+    func updateWeatherCondition() {
+        weatherModel.fetchWeatherCondition(completionHandler:{ [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
+                switch response.weatherCondition {
+                case .sunny:
+                    self.weatherImage.tintColor = .red
+                case .cloudy:
+                    self.weatherImage.tintColor = .gray
+                case .rainy:
+                    self.weatherImage.tintColor = .blue
+                }
+                self.maxTemperatureLabel.text = String(response.maxTemperature)
+                self.minTemperatureLabel.text = String(response.minTemperature)
+                self.indicator.stopAnimating()
+                
+            case .failure(let error):
+                let alertController = self.makeAlertController()
+                self.present(alertController, animated: true, completion: nil)
+                self.indicator.stopAnimating()
+            }
+        })
     }
 }
