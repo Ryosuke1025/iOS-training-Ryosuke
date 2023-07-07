@@ -14,8 +14,12 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
+<<<<<<< HEAD
 
     private var weatherModel: WeatherModelProtocol
+=======
+    private var weatherModel: WeatherModel
+>>>>>>> aee2242 ([Add] 呼び出す関数を変更して、incicatorを追加し、スレッド処理を用いて表示できるようにした)
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
