@@ -41,8 +41,7 @@ final class WeatherViewControllerUnitTest: XCTestCase {
     }
 }
 
-class WeatherModelMock: WeatherModelProtocol {
-    weak var delegate: WeatherModelDelegate?
+class WeatherModelMock: WeatherModel {
     var weatherCondition: WeatherCondition!
     var maxTemp: Int!
     var minTemp: Int!

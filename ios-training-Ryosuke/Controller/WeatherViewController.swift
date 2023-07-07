@@ -67,7 +67,7 @@ final class WeatherViewController: UIViewController {
 
 extension WeatherViewController {
     func updateWeatherCondition() {
-        weatherModel.fetchWeatherCondition(completionHandler:{ [weak self] result in
+        weatherModel.fetchWeatherCondition(completionHandler: { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
@@ -84,7 +84,7 @@ extension WeatherViewController {
                 self.minTemperatureLabel.text = String(response.minTemperature)
                 self.indicator.stopAnimating()
                 
-            case .failure(let error):
+            case .failure:
                 let alertController = self.makeAlertController()
                 self.present(alertController, animated: true, completion: nil)
                 self.indicator.stopAnimating()
