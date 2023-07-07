@@ -10,16 +10,16 @@ import Combine
 
 final class WeatherViewController: UIViewController {
 
-    private var cancellables: Set<AnyCancellable> = []
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
-
-
-    private var weatherModel: WeatherModelProtocol
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
-    init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
+    private var weatherModel: WeatherModel
+    
+    private var cancellables: Set<AnyCancellable> = []
+    
+    init?(coder: NSCoder, weatherModel: WeatherModel) {
         self.weatherModel = weatherModel
         super.init(coder: coder)
     }
