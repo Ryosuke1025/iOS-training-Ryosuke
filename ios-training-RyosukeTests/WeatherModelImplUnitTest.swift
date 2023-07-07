@@ -50,4 +50,17 @@ final class WeatherModelImplUnitTest: XCTestCase {
         XCTAssertEqual(decoded.minTemperature, expected.minTemperature)
         XCTAssertEqual(decoded.weatherCondition, expected.weatherCondition)
     }
+    
+    func testDecodeFailure() throws {
+        let responseString = """
+                {
+                  "max_temperature" : ,
+                  "date": "2020-04-01T12:00:00+09:00",
+                  "min_temperature" : 7,
+                  "weather_condition" : "sunny"
+                }
+                """
+        let result = weatherModelImpl.decode(responseString: responseString)
+        XCTAssertNil(result, "Decode should fail for invalid request.")
+    }
 }
