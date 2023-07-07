@@ -15,7 +15,6 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
     private var weatherModel: WeatherModel
-    private var isShowingError = false
     
     init?(coder: NSCoder, weatherModel: WeatherModel) {
         self.weatherModel = weatherModel
