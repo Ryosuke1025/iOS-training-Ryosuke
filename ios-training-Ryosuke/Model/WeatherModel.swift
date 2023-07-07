@@ -41,7 +41,9 @@ final class WeatherModelImpl: WeatherModel {
     }
     
     func encode(request: FetchWeatherRequest) -> String? {
-        guard let requestData = try? JSONEncoder().encode(request),
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
+        guard let requestData = try? encoder.encode(request),
               let requestString = String(data: requestData, encoding: .utf8) else {
             return nil
         }

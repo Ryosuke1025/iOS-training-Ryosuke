@@ -23,19 +23,24 @@ final class WeatherModelImplUnitTest: XCTestCase {
     func testEncode() throws {
         let area = "tokyo"
         let date = "2020-04-01T12:00:00+09:00"
-        let expected = FetchWeatherRequest(area: area, date: date)
+        let request = FetchWeatherRequest(area: area, date: date)
         let encoded = try XCTUnwrap(weatherModelImpl.encode(request: request))
-        let decoded = try XCTUnwrap(JSONDecoder().decode(FetchWeatherRequest.self, from: Data(encoded.utf8)))
-        XCTAssertEqual(decoded, request)
+        let expected = """
+                {
+                  "area" : "\(area)",
+                  "date" : "\(date)"
+                }
+                """
+        XCTAssertEqual(encoded, expected)
     }
     
     func testDecode() throws {
         let responseString = """
                 {
-                    "max_temperature": 25,
-                    "date": "2020-04-01T12:00:00+09:00",
-                    "min_temperature": 7,
-                    "weather_condition": "sunny"
+                  "max_temperature" : 25,
+                  "date": "2020-04-01T12:00:00+09:00",
+                  "min_temperature" : 7,
+                  "weather_condition" : "sunny"
                 }
                 """
         let decoded = try XCTUnwrap(weatherModelImpl.decode(responseString: responseString))
