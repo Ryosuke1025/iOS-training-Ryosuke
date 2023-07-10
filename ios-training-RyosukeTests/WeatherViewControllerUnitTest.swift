@@ -46,8 +46,8 @@ class WeatherModelMock: WeatherModel {
     var maxTemp: Int!
     var minTemp: Int!
     
-    func fetchWeatherCondition() {
-        delegate?.didFetchWeatherCondition(weatherModel: self, response: .init(maxTemperature: maxTemp, date:"2020-04-01T12:00:00+09:00" , minTemperature: minTemp, weatherCondition: weatherCondition))
+    func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void){
+        completionHandler(.success(.init(maxTemperature: 25, date:"2020-04-01T12:00:00+09:00" , minTemperature: 7, weatherCondition: weatherCondition)))
     }
     
     func encode(request: FetchWeatherRequest) -> String? {
