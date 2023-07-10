@@ -14,7 +14,9 @@ protocol WeatherModelProtocol {
 }
 
 enum FetchWeatherConditionError: Error {
-    case error
+    case decoding
+    case encoding
+    case unknown
 }
 
 final class WeatherModel: WeatherModelProtocol {
@@ -25,13 +27,13 @@ final class WeatherModel: WeatherModelProtocol {
                 let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
                 guard let requestString = self.encode(request: request) else {
                     assertionFailure("Encode Failed")
-                    completionHandler(.failure(FetchWeatherConditionError.error))
+                    completionHandler(.failure(FetchWeatherConditionError.decoding))
                     return
                 }
                 let responseString = try YumemiWeather.syncFetchWeather(requestString)
                 guard let response = self.decode(responseString: responseString) else {
                     assertionFailure("Decode Failed")
-                    completionHandler(.failure(FetchWeatherConditionError.error))
+                    completionHandler(.failure(FetchWeatherConditionError.encoding))
                     return
                 }
                 DispatchQueue.main.async {
@@ -39,7 +41,7 @@ final class WeatherModel: WeatherModelProtocol {
                 }
             } catch {
                 DispatchQueue.main.async {
-                    completionHandler(.failure(FetchWeatherConditionError.error))
+                    completionHandler(.failure(FetchWeatherConditionError.unknown))
                 }
             }
         }
