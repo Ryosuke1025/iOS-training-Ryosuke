@@ -41,13 +41,13 @@ final class WeatherViewControllerUnitTest: XCTestCase {
     }
 }
 
-class WeatherModelMock: WeatherModel {
+class WeatherModelMock: WeatherModelProtocol {
     var weatherCondition: WeatherCondition!
     var maxTemp: Int!
     var minTemp: Int!
     
     func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void){
-        completionHandler(.success(.init(maxTemperature: 25, date:"2020-04-01T12:00:00+09:00" , minTemperature: 7, weatherCondition: weatherCondition)))
+        completionHandler(.success(.init(maxTemperature: maxTemp, date:"2020-04-01T12:00:00+09:00" , minTemperature: minTemp, weatherCondition: weatherCondition)))
     }
     
     func encode(request: FetchWeatherRequest) -> String? {
