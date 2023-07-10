@@ -8,8 +8,8 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelDelegate: AnyObject {
-    func didFetchWeatherCondition(weatherModel: WeatherModel, response: FetchWeatherResponse)
-    func failedFetchWeatherCondition(weatherModel: WeatherModel)
+    func didFetchWeatherCondition(weatherModel: WeatherModelProtocol, response: FetchWeatherResponse)
+    func failedFetchWeatherCondition(weatherModel: WeatherModelProtocol)
 }
 
 protocol WeatherModelProtocol {

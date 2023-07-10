@@ -22,45 +22,33 @@ final class WeatherViewControllerUnitTest: XCTestCase {
         weatherViewController  = nil
     }
     
-    func testSunny() {
-        compareWithImage(weatherCondition: WeatherCondition.sunny)
-    }
-    
-    func testCloudy() {
-        compareWithImage(weatherCondition: WeatherCondition.cloudy)
-    }
-    
-    func testRainy() {
-        compareWithImage(weatherCondition: WeatherCondition.rainy)
-    }
-    
-    private func compareWithImage(weatherCondition: WeatherCondition) {
-        mock.weatherCondition = weatherCondition
-        mock.fetchWeatherCondition()
-        XCTAssertEqual(weatherViewController.weatherImage.image, UIImage(named: weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate))
-    }
-    
-    func testMaxTemperature() throws {
-        mock.weatherCondition = .sunny
-        mock.fetchWeatherCondition()
-        let maxTemperatureText = try XCTUnwrap(weatherViewController.maxTemperatureLabel.text)
-        XCTAssertEqual(maxTemperatureText, "25")
-    }
-    
-    func testMinTemperature() throws {
-        mock.weatherCondition = .sunny
-        mock.fetchWeatherCondition()
-        let minTemperatureText = try XCTUnwrap(weatherViewController.minTemperatureLabel.text)
-        XCTAssertEqual(minTemperatureText, "7")
+    func testReload() {
+        let expectedWeather: [(condition: WeatherCondition, maxTemp: Int, minTemp: Int)] = [
+            (.sunny, 7, 25),
+            (.cloudy, 5, 20),
+            (.rainy, 0, 15)
+        ]
+        
+        for weather in expectedWeather {
+            mock.weatherCondition = weather.condition
+            mock.maxTemp = weather.maxTemp
+            mock.minTemp = weather.minTemp
+            weatherViewController.reload(UIButton())
+            XCTAssertEqual(weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
+            XCTAssertEqual(weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
+            XCTAssertEqual(weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
+        }
     }
 }
 
-class WeatherModelMock: WeatherModel {
+class WeatherModelMock: WeatherModelProtocol {
     weak var delegate: WeatherModelDelegate?
     var weatherCondition: WeatherCondition!
+    var maxTemp: Int!
+    var minTemp: Int!
     
     func fetchWeatherCondition() {
-        delegate?.didFetchWeatherCondition(response: .init(maxTemperature: 25, date:"2020-04-01T12:00:00+09:00" , minTemperature: 7, weatherCondition: weatherCondition))
+        delegate?.didFetchWeatherCondition(weatherModel: self, response: .init(maxTemperature: maxTemp, date:"2020-04-01T12:00:00+09:00" , minTemperature: minTemp, weatherCondition: weatherCondition))
     }
     
     func encode(request: FetchWeatherRequest) -> String? {
