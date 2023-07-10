@@ -14,9 +14,9 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var weatherImage: UIImageView!
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
-    private var weatherModel: WeatherModel
+    private var weatherModel: WeatherModelProtocol
     
-    init?(coder: NSCoder, weatherModel: WeatherModel) {
+    init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel
         super.init(coder: coder)
     }
@@ -25,7 +25,7 @@ final class WeatherViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    static func getInstance(weatherModel: WeatherModel) -> WeatherViewController? {
+    static func getInstance(weatherModel: WeatherModelProtocol) -> WeatherViewController? {
         let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
         let weatherViewController = storyboard.instantiateInitialViewController { coder in
             WeatherViewController(coder: coder, weatherModel: weatherModel)

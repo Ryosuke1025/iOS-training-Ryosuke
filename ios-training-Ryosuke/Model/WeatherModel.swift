@@ -12,14 +12,14 @@ protocol WeatherModelDelegate: AnyObject {
     func failedFetchWeatherCondition()
 }
 
-protocol WeatherModel {
+protocol WeatherModelProtocol {
     var delegate: WeatherModelDelegate? {get set}
     func fetchWeatherCondition()
     func encode(request: FetchWeatherRequest) -> String?
     func decode(responseString: String) -> FetchWeatherResponse?
 }
 
-final class WeatherModelImpl: WeatherModel {
+final class WeatherModel: WeatherModelProtocol {
     weak var delegate: WeatherModelDelegate?
     
     func fetchWeatherCondition() {
