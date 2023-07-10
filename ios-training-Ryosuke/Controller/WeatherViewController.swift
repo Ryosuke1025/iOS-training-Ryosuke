@@ -15,7 +15,7 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var maxTemperatureLabel: UILabel!
     @IBOutlet weak var minTemperatureLabel: UILabel!
 
-    private var weatherModel: WeatherModel
+    private var weatherModel: WeatherModelProtocol
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
@@ -50,7 +50,8 @@ final class WeatherViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction private func reload(_ sender: Any) {
+    // swiftlint:disable private_action
+    @IBAction func reload(_ sender: Any) {
         indicator.startAnimating()
         weatherModel.fetchWeatherCondition()
     }

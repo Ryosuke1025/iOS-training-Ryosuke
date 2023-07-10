@@ -36,21 +36,13 @@ final class WeatherModel: WeatherModelProtocol {
                     return
                 }
                 DispatchQueue.main.async {
-                    self.delegate?.didFetchWeatherCondition(response: response)
+                    self.delegate?.didFetchWeatherCondition(weatherModel: self, response: response)
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.delegate?.failedFetchWeatherCondition()
+                    self.delegate?.failedFetchWeatherCondition(weatherModel: self)
                 }
             }
-            let responseString = try YumemiWeather.fetchWeather(requestString)
-            guard let response = decode(responseString: responseString) else {
-                assertionFailure("Decode Failed")
-                return
-            }
-            delegate?.didFetchWeatherCondition(weatherModel: self, response: response)
-        } catch {
-            delegate?.failedFetchWeatherCondition(weatherModel: self)
         }
     }
     
