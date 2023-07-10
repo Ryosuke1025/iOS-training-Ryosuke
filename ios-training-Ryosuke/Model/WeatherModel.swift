@@ -8,8 +8,8 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelDelegate: AnyObject {
-    func didFetchWeatherCondition(response: FetchWeatherResponse)
-    func failedFetchWeatherCondition()
+    func didFetchWeatherCondition(weatherModel: WeatherModel, response: FetchWeatherResponse)
+    func failedFetchWeatherCondition(weatherModel: WeatherModel)
 }
 
 protocol WeatherModelProtocol {
@@ -34,9 +34,9 @@ final class WeatherModel: WeatherModelProtocol {
                 assertionFailure("Decode Failed")
                 return
             }
-            delegate?.didFetchWeatherCondition(response: response)
+            delegate?.didFetchWeatherCondition(weatherModel: self,response: response)
         } catch {
-            delegate?.failedFetchWeatherCondition()
+            delegate?.failedFetchWeatherCondition(weatherModel: self)
         }
     }
     

@@ -61,7 +61,7 @@ final class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController: WeatherModelDelegate {
-    func didFetchWeatherCondition(response: FetchWeatherResponse) {
+    func didFetchWeatherCondition(weatherModel: WeatherModel, response: FetchWeatherResponse) {
         weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
         switch response.weatherCondition {
         case .sunny:
@@ -75,7 +75,7 @@ extension WeatherViewController: WeatherModelDelegate {
         minTemperatureLabel.text = String(response.minTemperature)
     }
     
-    func failedFetchWeatherCondition() {
+    func failedFetchWeatherCondition(weatherModel: WeatherModel) {
         let alertController = makeAlertController()
         present(alertController, animated: true, completion: nil)
     }
