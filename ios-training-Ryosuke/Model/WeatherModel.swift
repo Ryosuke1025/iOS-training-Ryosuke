@@ -34,7 +34,7 @@ final class WeatherModel: WeatherModelProtocol {
                 assertionFailure("Decode Failed")
                 return
             }
-            delegate?.didFetchWeatherCondition(weatherModel: self,response: response)
+            delegate?.didFetchWeatherCondition(weatherModel: self, response: response)
         } catch {
             delegate?.failedFetchWeatherCondition(weatherModel: self)
         }
