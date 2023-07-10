@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class WeatherViewController: UIViewController {
     
@@ -15,9 +16,17 @@ final class WeatherViewController: UIViewController {
     
     private let weatherModel = WeatherModel()
     
+    private var cancellables: Set<AnyCancellable> = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         weatherModel.delegate = self
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .filter { [weak self] _ in self?.presentedViewController == nil }
+            .sink { [weak self] _ in
+                self?.weatherModel.fetchWeatherCondition()
+            }
+            .store(in: &cancellables)
     }
     
     @IBAction private func close(_ sender: Any) {
