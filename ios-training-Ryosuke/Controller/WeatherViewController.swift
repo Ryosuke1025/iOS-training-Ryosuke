@@ -15,11 +15,11 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var minTemperatureLabel: UILabel!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
-    private var weatherModel: WeatherModel
+    private var weatherModel: WeatherModelProtocol
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init?(coder: NSCoder, weatherModel: WeatherModel) {
+    init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel
         super.init(coder: coder)
     }

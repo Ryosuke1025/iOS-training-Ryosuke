@@ -7,7 +7,7 @@
 import YumemiWeather
 import Foundation
 
-protocol WeatherModel {
+protocol WeatherModelProtocol {
     func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void)
     func encode(request: FetchWeatherRequest) -> String?
     func decode(responseString: String) -> FetchWeatherResponse?
@@ -17,7 +17,7 @@ enum FetchWeatherConditionError: Error {
     case error
 }
 
-final class WeatherModelImpl: WeatherModel {
+final class WeatherModel: WeatherModelProtocol {
     
     func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void) {
         DispatchQueue.global().async {
