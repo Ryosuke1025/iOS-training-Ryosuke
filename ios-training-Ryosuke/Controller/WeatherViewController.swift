@@ -27,7 +27,11 @@ final class WeatherViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    deinit {
+        print("WeatherViewController is deinit")
+    }
+    
     static func getInstance(weatherModel: WeatherModelProtocol) -> WeatherViewController? {
         let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
         let weatherViewController = storyboard.instantiateInitialViewController { coder in
