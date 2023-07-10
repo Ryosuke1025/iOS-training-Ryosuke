@@ -8,11 +8,18 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelDelegate: AnyObject {
-    func didFetchWeatherCondition(response: FetchWeatherResponse)
-    func failedFetchWeatherCondition()
+    func didFetchWeatherCondition(weatherModel: WeatherModelProtocol, response: FetchWeatherResponse)
+    func failedFetchWeatherCondition(weatherModel: WeatherModelProtocol)
 }
 
-final class WeatherModel {
+protocol WeatherModelProtocol {
+    var delegate: WeatherModelDelegate? {get set}
+    func fetchWeatherCondition()
+    func encode(request: FetchWeatherRequest) -> String?
+    func decode(responseString: String) -> FetchWeatherResponse?
+}
+
+final class WeatherModel: WeatherModelProtocol {
     weak var delegate: WeatherModelDelegate?
     
     func fetchWeatherCondition() {
@@ -27,25 +34,27 @@ final class WeatherModel {
                 assertionFailure("Decode Failed")
                 return
             }
-            delegate?.didFetchWeatherCondition(response: response)
+            delegate?.didFetchWeatherCondition(weatherModel: self, response: response)
         } catch {
-            delegate?.failedFetchWeatherCondition()
+            delegate?.failedFetchWeatherCondition(weatherModel: self)
         }
     }
     
-    private func encode(request: FetchWeatherRequest) -> String? {
-        guard let requestData = try? JSONEncoder().encode(request),
+    func encode(request: FetchWeatherRequest) -> String? {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
+        guard let requestData = try? encoder.encode(request),
               let requestString = String(data: requestData, encoding: .utf8) else {
             return nil
         }
         return requestString
     }
     
-    private func decode(responseString: String) -> FetchWeatherResponse? {
-        guard let responseData = responseString.data(using: .utf8) else {
+    func decode(responseString: String) -> FetchWeatherResponse? {
+        guard let responseData = responseString.data(using: .utf8),
+              let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData)else {
             return nil
         }
-        let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData)
         return response
     }
 }

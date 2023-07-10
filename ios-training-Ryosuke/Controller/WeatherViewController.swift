@@ -9,14 +9,29 @@ import UIKit
 import Combine
 
 final class WeatherViewController: UIViewController {
-    
-    @IBOutlet private weak var weatherImage: UIImageView!
-    @IBOutlet private weak var maxTemperatureLabel: UILabel!
-    @IBOutlet private weak var minTemperatureLabel: UILabel!
-    
-    private let weatherModel = WeatherModel()
-    
+
     private var cancellables: Set<AnyCancellable> = []
+    @IBOutlet weak var weatherImage: UIImageView!
+    @IBOutlet weak var maxTemperatureLabel: UILabel!
+    @IBOutlet weak var minTemperatureLabel: UILabel!
+    var weatherModel: WeatherModelProtocol
+    
+    init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
+        self.weatherModel = weatherModel
+        super.init(coder: coder)
+    }
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    static func getInstance(weatherModel: WeatherModelProtocol) -> WeatherViewController? {
+        let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
+        let weatherViewController = storyboard.instantiateInitialViewController { coder in
+            WeatherViewController(coder: coder, weatherModel: weatherModel)
+        }
+        return weatherViewController
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +48,11 @@ final class WeatherViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction private func reload(_ sender: Any) {
+    // swiftlint:disable private_action
+    @IBAction func reload(_ sender: Any) {
         weatherModel.fetchWeatherCondition()
     }
+    // swiftlint:enable private_action
     
     func makeAlertController() -> UIAlertController {
         let alertController = UIAlertController(title: "予期せぬエラー", message: "OKボタンを押して下さい", preferredStyle: .alert)
@@ -46,7 +63,7 @@ final class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController: WeatherModelDelegate {
-    func didFetchWeatherCondition(response: FetchWeatherResponse) {
+    func didFetchWeatherCondition(weatherModel: WeatherModelProtocol, response: FetchWeatherResponse) {
         weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
         switch response.weatherCondition {
         case .sunny:
@@ -60,7 +77,7 @@ extension WeatherViewController: WeatherModelDelegate {
         minTemperatureLabel.text = String(response.minTemperature)
     }
     
-    func failedFetchWeatherCondition() {
+    func failedFetchWeatherCondition(weatherModel: WeatherModelProtocol) {
         let alertController = makeAlertController()
         present(alertController, animated: true, completion: nil)
     }
