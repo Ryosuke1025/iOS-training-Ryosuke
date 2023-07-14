@@ -45,7 +45,9 @@ final class WeatherViewController: UIViewController {
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             .filter { [weak self] _ in self?.presentedViewController == nil }
             .sink { [weak self] _ in
-                self?.updateWeatherCondition()
+                Task {
+                    await self?.updateWeatherCondition()
+                }
             }
             .store(in: &cancellables)
     }
@@ -57,7 +59,9 @@ final class WeatherViewController: UIViewController {
     // swiftlint:disable private_action
     @IBAction func reload(_ sender: Any) {
         indicator.startAnimating()
-        updateWeatherCondition()
+        Task {
+            await self.updateWeatherCondition()
+        }
     }
     // swiftlint:enable private_action
     
@@ -70,29 +74,25 @@ final class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController {
-    func updateWeatherCondition() {
-        weatherModel.fetchWeatherCondition(completionHandler: { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-                switch response.weatherCondition {
-                case .sunny:
-                    self.weatherImage.tintColor = .red
-                case .cloudy:
-                    self.weatherImage.tintColor = .gray
-                case .rainy:
-                    self.weatherImage.tintColor = .blue
-                }
-                self.maxTemperatureLabel.text = String(response.maxTemperature)
-                self.minTemperatureLabel.text = String(response.minTemperature)
-                self.indicator.stopAnimating()
-                
-            case .failure:
-                let alertController = self.makeAlertController()
-                self.present(alertController, animated: true, completion: nil)
-                self.indicator.stopAnimating()
+    func updateWeatherCondition() async {
+        do {
+            let response = try await weatherModel.fetchWeatherCondition()
+            self.weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
+            switch response.weatherCondition {
+            case .sunny:
+                self.weatherImage.tintColor = .red
+            case .cloudy:
+                self.weatherImage.tintColor = .gray
+            case .rainy:
+                self.weatherImage.tintColor = .blue
             }
-        })
+            self.maxTemperatureLabel.text = String(response.maxTemperature)
+            self.minTemperatureLabel.text = String(response.minTemperature)
+            self.indicator.stopAnimating()
+        } catch {
+            let alertController = self.makeAlertController()
+            self.present(alertController, animated: true, completion: nil)
+            self.indicator.stopAnimating()
+        }
     }
 }

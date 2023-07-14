@@ -8,7 +8,7 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelProtocol {
-    func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void)
+    func fetchWeatherCondition() async throws -> FetchWeatherResponse
     func encode(request: FetchWeatherRequest) -> String?
     func decode(responseString: String) -> FetchWeatherResponse?
 }
@@ -21,29 +21,19 @@ enum FetchWeatherConditionError: Error {
 
 final class WeatherModel: WeatherModelProtocol {
     
-    func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void) {
-        DispatchQueue.global().async {
-            do {
-                let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
-                guard let requestString = self.encode(request: request) else {
-                    assertionFailure("Encode Failed")
-                    completionHandler(.failure(FetchWeatherConditionError.decoding))
-                    return
-                }
-                let responseString = try YumemiWeather.syncFetchWeather(requestString)
-                guard let response = self.decode(responseString: responseString) else {
-                    assertionFailure("Decode Failed")
-                    completionHandler(.failure(FetchWeatherConditionError.encoding))
-                    return
-                }
-                DispatchQueue.main.async {
-                    completionHandler(.success(response))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completionHandler(.failure(FetchWeatherConditionError.unknown))
-                }
+    func fetchWeatherCondition() async throws -> FetchWeatherResponse {
+        let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
+        guard let requestString = self.encode(request: request) else {
+            throw FetchWeatherConditionError.encoding
+        }
+        do {
+            let responseString = try await YumemiWeather.asyncFetchWeather(requestString)
+            guard let response = self.decode(responseString: responseString) else {
+                throw FetchWeatherConditionError.decoding
             }
+            return response
+        } catch {
+            throw FetchWeatherConditionError.unknown
         }
     }
     
