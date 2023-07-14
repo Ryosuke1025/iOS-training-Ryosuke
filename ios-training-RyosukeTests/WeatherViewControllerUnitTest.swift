@@ -8,6 +8,7 @@
 import XCTest
 @testable import ios_training_Ryosuke
 
+@MainActor
 final class WeatherViewControllerUnitTest: XCTestCase {
     
     var weatherViewController: WeatherViewController!
@@ -33,16 +34,13 @@ final class WeatherViewControllerUnitTest: XCTestCase {
             mock.weatherCondition = weather.condition
             mock.maxTemp = weather.maxTemp
             mock.minTemp = weather.minTemp
-            await weatherViewController.reload(UIButton())
-            
+            weatherViewController.reload(UIButton())
             Task {
-                await XCTAssertEqual(weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
-                await XCTAssertEqual(weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
-                await XCTAssertEqual(weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
+                XCTAssertEqual(weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
+                XCTAssertEqual(weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
+                XCTAssertEqual(weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
             }
-            
         }
-        
     }
 }
 
