@@ -72,6 +72,9 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="idd-zI-xfh">
+                                <rect key="frame" x="186.66666666666666" y="564.33333333333337" width="20" height="40"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -81,11 +84,15 @@
                             <constraint firstItem="3gP-jt-JIF" firstAttribute="centerX" secondItem="5RH-Iz-hDj" secondAttribute="centerX" id="8hA-Il-VTO"/>
                             <constraint firstItem="6Ww-X3-1VW" firstAttribute="top" secondItem="DG3-vK-cuU" secondAttribute="bottom" constant="80" id="9f8-3S-GeB"/>
                             <constraint firstItem="6Ww-X3-1VW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JIo-oS-E4E"/>
+                            <constraint firstItem="idd-zI-xfh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JkZ-3w-2qF"/>
                             <constraint firstItem="xB8-mB-zei" firstAttribute="centerX" secondItem="Wpt-w2-WYc" secondAttribute="centerX" id="KtU-kd-qDF"/>
+                            <constraint firstItem="idd-zI-xfh" firstAttribute="top" secondItem="DG3-vK-cuU" secondAttribute="bottom" constant="20" id="XpX-81-Rh3"/>
                             <constraint firstItem="DG3-vK-cuU" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="i5v-uO-gkC"/>
+                            <constraint firstItem="6Ww-X3-1VW" firstAttribute="top" secondItem="idd-zI-xfh" secondAttribute="bottom" constant="20" id="uMg-TR-hqL"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="indicator" destination="idd-zI-xfh" id="Zxu-DT-Jzq"/>
                         <outlet property="maxTemperatureLabel" destination="Wpt-w2-WYc" id="DWd-2K-rE0"/>
                         <outlet property="minTemperatureLabel" destination="5RH-Iz-hDj" id="3eH-7d-WUI"/>
                         <outlet property="weatherImage" destination="hEV-dA-f4T" id="ifp-VI-tfj"/>
