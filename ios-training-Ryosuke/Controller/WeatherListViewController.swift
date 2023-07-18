@@ -46,6 +46,15 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
         response.count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "WeatherDetailView", bundle: nil)
+        let nextVC = storyboard.instantiateInitialViewController { [self] coder in
+            WeatherDetailViewController(coder: coder, response: response[indexPath.row])
+        }
+        guard let safenextVC = nextVC else { return }
+        present(safenextVC, animated: true, completion: nil)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as? CustomCell else {
             fatalError("Unable to dequeue a CustomCell.")
@@ -59,8 +68,8 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     override func viewDidLoad() {
-        updateWeatherCondition()
         super.viewDidLoad()
+        updateWeatherCondition()
     }
 }
 
@@ -68,10 +77,12 @@ extension WeatherListViewController {
     func updateWeatherCondition() {
         do {
             response = try weatherModel.fetchWeatherCondition()
-            print(response)
+            print("Fetch weather condition completed.")
         } catch {
-            let alertController = self.makeAlertController()
-            self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                let alertController = self.makeAlertController()
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
     }
     
