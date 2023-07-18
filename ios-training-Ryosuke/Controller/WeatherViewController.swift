@@ -75,10 +75,11 @@ final class WeatherViewController: UIViewController {
 
 extension WeatherViewController {
     func updateWeatherCondition() async {
+        
         do {
             let response = try await weatherModel.fetchWeatherCondition()
-            self.weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-            switch response.weatherCondition {
+            self.weatherImage.image = UIImage(named: response[0].info.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
+            switch response[0].info.weatherCondition {
             case .sunny:
                 self.weatherImage.tintColor = .red
             case .cloudy:
@@ -86,8 +87,8 @@ extension WeatherViewController {
             case .rainy:
                 self.weatherImage.tintColor = .blue
             }
-            self.maxTemperatureLabel.text = String(response.maxTemperature)
-            self.minTemperatureLabel.text = String(response.minTemperature)
+            self.maxTemperatureLabel.text = String(response[0].info.maxTemperature)
+            self.minTemperatureLabel.text = String(response[0].info.minTemperature)
             self.indicator.stopAnimating()
         } catch {
             let alertController = self.makeAlertController()

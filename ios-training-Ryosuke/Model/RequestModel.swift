@@ -6,6 +6,6 @@
 //
 
 struct FetchWeatherRequest: Codable, Equatable {
-    let area: String
+    let areas: [String]
     let date: String
 }

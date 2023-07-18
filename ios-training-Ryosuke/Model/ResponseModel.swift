@@ -6,16 +6,21 @@
 //
 
 struct FetchWeatherResponse: Decodable {
-    var maxTemperature: Int
-    var date: String
-    var minTemperature: Int
-    var weatherCondition: WeatherCondition
+    let area: String
+    let info: WeatherInfo
+}
+
+struct WeatherInfo: Decodable {
+    let maxTemperature: Int
+    let date: String
+    let minTemperature: Int
+    let weatherCondition: WeatherCondition
     
     enum CodingKeys: String, CodingKey {
         case maxTemperature = "max_temperature"
-        case date
         case minTemperature = "min_temperature"
         case weatherCondition = "weather_condition"
+        case date
     }
 }
 

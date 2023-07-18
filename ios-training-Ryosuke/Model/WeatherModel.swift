@@ -8,9 +8,9 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelProtocol {
-    func fetchWeatherCondition() async throws -> FetchWeatherResponse
+    func fetchWeatherCondition() async throws -> [FetchWeatherResponse]
     func encode(request: FetchWeatherRequest) -> String?
-    func decode(responseString: String) -> FetchWeatherResponse?
+    func decode(responseString: String) -> [FetchWeatherResponse]?
 }
 
 enum FetchWeatherConditionError: Error {
@@ -21,13 +21,13 @@ enum FetchWeatherConditionError: Error {
 
 final class WeatherModel: WeatherModelProtocol {
     
-    func fetchWeatherCondition() async throws -> FetchWeatherResponse {
-        let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
+    func fetchWeatherCondition() async throws -> [FetchWeatherResponse] {
+        let request = FetchWeatherRequest(areas: ["Tokyo"], date: "2020-04-01T12:00:00+09:00")
         guard let requestString = self.encode(request: request) else {
             throw FetchWeatherConditionError.encoding
         }
         do {
-            let responseString = try await YumemiWeather.asyncFetchWeather(requestString)
+            let responseString = try await YumemiWeather.fetchWeatherList(requestString)
             guard let response = self.decode(responseString: responseString) else {
                 throw FetchWeatherConditionError.decoding
             }
@@ -47,11 +47,18 @@ final class WeatherModel: WeatherModelProtocol {
         return requestString
     }
     
-    func decode(responseString: String) -> FetchWeatherResponse? {
-        guard let responseData = responseString.data(using: .utf8),
-              let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData)else {
+    func decode(responseString: String) -> [FetchWeatherResponse]? {
+        guard let responseData = responseString.data(using: .utf8) else {
+            print("Failed to convert response string to data: \(responseString)")
             return nil
         }
-        return response
+
+        do {
+            let response = try JSONDecoder().decode([FetchWeatherResponse].self, from: responseData)
+            return response
+        } catch {
+            print("Failed to decode response data: \(error)")
+            return nil
+        }
     }
 }
