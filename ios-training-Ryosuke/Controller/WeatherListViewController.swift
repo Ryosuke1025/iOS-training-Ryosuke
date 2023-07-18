@@ -11,7 +11,7 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var tableView: UITableView!
     
-    var response: [FetchWeatherResponse] = []{
+    var response: [FetchWeatherResponse] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
