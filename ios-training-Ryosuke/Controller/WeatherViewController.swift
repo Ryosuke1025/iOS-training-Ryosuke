@@ -77,7 +77,7 @@ extension WeatherViewController {
     func updateWeatherCondition() async {
         
         do {
-            let response = try await weatherModel.fetchWeatherCondition()
+            let response = try weatherModel.fetchWeatherCondition()
             self.weatherImage.image = UIImage(named: response[0].info.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
             switch response[0].info.weatherCondition {
             case .sunny:

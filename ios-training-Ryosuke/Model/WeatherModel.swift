@@ -8,7 +8,7 @@ import YumemiWeather
 import Foundation
 
 protocol WeatherModelProtocol {
-    func fetchWeatherCondition() async throws -> [FetchWeatherResponse]
+    func fetchWeatherCondition() throws -> [FetchWeatherResponse]
     func encode(request: FetchWeatherRequest) -> String?
     func decode(responseString: String) -> [FetchWeatherResponse]?
 }
@@ -21,13 +21,13 @@ enum FetchWeatherConditionError: Error {
 
 final class WeatherModel: WeatherModelProtocol {
     
-    func fetchWeatherCondition() async throws -> [FetchWeatherResponse] {
+    func fetchWeatherCondition() throws -> [FetchWeatherResponse] {
         let request = FetchWeatherRequest(areas: ["Tokyo"], date: "2020-04-01T12:00:00+09:00")
         guard let requestString = self.encode(request: request) else {
             throw FetchWeatherConditionError.encoding
         }
         do {
-            let responseString = try await YumemiWeather.fetchWeatherList(requestString)
+            let responseString = try YumemiWeather.fetchWeatherList(requestString)
             guard let response = self.decode(responseString: responseString) else {
                 throw FetchWeatherConditionError.decoding
             }
