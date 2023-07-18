@@ -34,9 +34,12 @@ enum WeatherCondition: String, Decodable {
 extension WeatherCondition {
     var color: UIColor {
         switch self {
-        case .sunny: return .red
-        case .cloudy: return .gray
-        case .rainy: return .blue
+        case .sunny:
+            return .red
+        case .cloudy:
+            return .gray
+        case .rainy: 
+            return .blue
         }
     }
 }
