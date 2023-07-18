@@ -43,7 +43,7 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return response.count
+        response.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -51,15 +51,7 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
             fatalError("Unable to dequeue a CustomCell.")
         }
         cell.weatherImage.image = UIImage(named: response[indexPath.row].info.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-        switch response[indexPath.row].info.weatherCondition {
-        case .sunny:
-            cell.weatherImage.tintColor = .red
-        case .cloudy:
-            cell.weatherImage.tintColor = .gray
-        case .rainy:
-            cell.weatherImage.tintColor = .blue
-        }
-        
+        cell.weatherImage.tintColor = response[indexPath.row].info.weatherCondition.color
         cell.cityLabel.text = response[indexPath.row].area
         cell.maxTemperatureLabel.text = String(response[indexPath.row].info.maxTemperature)
         cell.minTemperatureLabel.text = String(response[indexPath.row].info.minTemperature)

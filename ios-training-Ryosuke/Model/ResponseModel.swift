@@ -4,6 +4,7 @@
 //
 //  Created by 須崎 良祐 on 2023/06/23.
 //
+import UIKit
 
 struct FetchWeatherResponse: Decodable {
     let area: String
@@ -28,4 +29,14 @@ enum WeatherCondition: String, Decodable {
     case sunny
     case cloudy
     case rainy
+}
+
+extension WeatherCondition {
+    var color: UIColor {
+        switch self {
+        case .sunny: return .red
+        case .cloudy: return .gray
+        case .rainy: return .blue
+        }
+    }
 }
