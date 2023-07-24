@@ -14,7 +14,9 @@ final class WeatherViewControllerUnitTest: XCTestCase {
     let mock = WeatherModelMock()
     
     override func setUpWithError() throws {
-        weatherViewController = WeatherViewController.getInstance(weatherModel: mock)
+        let mock = WeatherModelMock()
+        let weatherViewModel = WeatherViewModel(weatherModel: mock)
+        weatherViewController = WeatherViewController.getInstance(weatherViewModel: weatherViewModel)
         weatherViewController.loadViewIfNeeded()
     }
 
@@ -34,9 +36,12 @@ final class WeatherViewControllerUnitTest: XCTestCase {
             mock.maxTemp = weather.maxTemp
             mock.minTemp = weather.minTemp
             weatherViewController.reload(UIButton())
-            XCTAssertEqual(weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
-            XCTAssertEqual(weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
-            XCTAssertEqual(weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
+            DispatchQueue.main.async {
+                XCTAssertEqual(self.weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
+                XCTAssertEqual(self.weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
+                XCTAssertEqual(self.weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
+            }
+            
         }
     }
 }

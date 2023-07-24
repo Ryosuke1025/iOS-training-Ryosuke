@@ -56,8 +56,11 @@ final class WeatherViewController: UIViewController {
     
     // swiftlint:disable private_action
     @IBAction func reload(_ sender: Any) {
-        indicator.startAnimating()
-        updateWeatherCondition()
+        DispatchQueue.main.async {
+            self.indicator.startAnimating()
+            self.updateWeatherCondition()
+        }
+        
     }
     // swiftlint:enable private_action
     
