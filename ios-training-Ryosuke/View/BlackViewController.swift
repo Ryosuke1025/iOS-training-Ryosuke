@@ -17,9 +17,7 @@ final class BlackViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let weatherModel = WeatherModel()
-        let weatherViewModel = WeatherViewModel(weatherModel: weatherModel)
-        guard let weatherViewController = WeatherViewController.getInstance(weatherViewModel: weatherViewModel) else { return}
+        guard let weatherViewController = WeatherViewController.getInstance(weatherModel: WeatherModel()) else { return}
         weatherViewController.modalPresentationStyle = .fullScreen
         present(weatherViewController, animated: true, completion: nil)
     }

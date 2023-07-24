@@ -15,12 +15,12 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var minTemperatureLabel: UILabel!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
-    private var weatherViewModel: WeatherViewModel
+    private var weatherModel: WeatherModelProtocol
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init?(coder: NSCoder, weatherViewModel: WeatherViewModel) {
-        self.weatherViewModel = weatherViewModel
+    init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
+        self.weatherModel = weatherModel
         super.init(coder: coder)
     }
     @available(*, unavailable)
@@ -32,10 +32,10 @@ final class WeatherViewController: UIViewController {
         print("WeatherViewController is deinit")
     }
     
-    static func getInstance(weatherViewModel: WeatherViewModel) -> WeatherViewController? {
+    static func getInstance(weatherModel: WeatherModelProtocol) -> WeatherViewController? {
         let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
         let weatherViewController = storyboard.instantiateInitialViewController { coder in
-            WeatherViewController(coder: coder, weatherViewModel: weatherViewModel)
+            WeatherViewController(coder: coder, weatherModel: weatherModel)
         }
         return weatherViewController
     }
@@ -71,30 +71,28 @@ final class WeatherViewController: UIViewController {
 
 extension WeatherViewController {
     func updateWeatherCondition() {
-        weatherViewModel.fetchWeatherCondition { [weak self] result in
+        weatherModel.fetchWeatherCondition(completionHandler: { [weak self] result in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    let weatherCondition = self.weatherViewModel.weatherCondition
-                    self.weatherImage.image = UIImage(named: weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-                    switch weatherCondition {
-                    case .sunny:
-                        self.weatherImage.tintColor = .red
-                    case .cloudy:
-                        self.weatherImage.tintColor = .gray
-                    case .rainy:
-                        self.weatherImage.tintColor = .blue
-                    }
-                    self.maxTemperatureLabel.text = String(self.weatherViewModel.maxTemperature)
-                    self.minTemperatureLabel.text = String(self.weatherViewModel.minTemperature)
-                    self.indicator.stopAnimating()
-                    
-                case .failure:
-                    self.present(self.makeAlertController(), animated: true, completion: nil)
-                    self.indicator.stopAnimating()
+            switch result {
+            case .success(let response):
+                self.weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
+                switch response.weatherCondition {
+                case .sunny:
+                    self.weatherImage.tintColor = .red
+                case .cloudy:
+                    self.weatherImage.tintColor = .gray
+                case .rainy:
+                    self.weatherImage.tintColor = .blue
                 }
+                self.maxTemperatureLabel.text = String(response.maxTemperature)
+                self.minTemperatureLabel.text = String(response.minTemperature)
+                self.indicator.stopAnimating()
+                
+            case .failure:
+                let alertController = self.makeAlertController()
+                self.present(alertController, animated: true, completion: nil)
+                self.indicator.stopAnimating()
             }
-        }
+        })
     }
 }
