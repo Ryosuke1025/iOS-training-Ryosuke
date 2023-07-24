@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeatherListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class WeatherListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -42,10 +42,13 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
         return weatherListViewController
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        response.count
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateWeatherCondition()
     }
-    
+}
+
+extension WeatherListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "WeatherDetailView", bundle: nil)
         let nextVC = storyboard.instantiateInitialViewController { [self] coder in
@@ -53,6 +56,12 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
         }
         guard let safenextVC = nextVC else { return }
         present(safenextVC, animated: true, completion: nil)
+    }
+}
+
+extension WeatherListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        response.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -66,18 +75,12 @@ class WeatherListViewController: UIViewController, UITableViewDelegate, UITableV
         cell.minTemperatureLabel.text = String(response[indexPath.row].info.minTemperature)
         return cell
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateWeatherCondition()
-    }
 }
 
 extension WeatherListViewController {
     func updateWeatherCondition() {
         do {
             response = try weatherModel.fetchWeatherCondition()
-            print("Fetch weather condition completed.")
         } catch {
             DispatchQueue.main.async {
                 let alertController = self.makeAlertController()
