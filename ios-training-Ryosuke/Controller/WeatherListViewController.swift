@@ -10,15 +10,14 @@ import UIKit
 class WeatherListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    
     var response: [FetchWeatherResponse] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.tableView.refreshControl?.endRefreshing()
             }
         }
     }
-    
     private var weatherModel: WeatherModelProtocol
     
     init?(coder: NSCoder, weatherModel: WeatherModelProtocol) {
@@ -42,8 +41,15 @@ class WeatherListViewController: UIViewController {
         return weatherListViewController
     }
     
+    @objc func refresh(_ sender: UIRefreshControl) {
+        updateWeatherCondition()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         updateWeatherCondition()
     }
 }
@@ -84,7 +90,9 @@ extension WeatherListViewController {
         } catch {
             DispatchQueue.main.async {
                 let alertController = self.makeAlertController()
-                self.present(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true) { [weak self] in
+                    self?.tableView.refreshControl?.endRefreshing()
+                }
             }
         }
     }
