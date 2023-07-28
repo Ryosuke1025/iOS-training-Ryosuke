@@ -4,6 +4,7 @@
 //
 //  Created by 須崎 良祐 on 2023/07/24.
 //
+import UIKit
 final class WeatherViewModel {
     
     private var weatherModel: WeatherModelProtocol

@@ -20,7 +20,6 @@ enum FetchWeatherConditionError: Error {
 }
 
 final class WeatherModel: WeatherModelProtocol {
-    
     func fetchWeatherCondition() async throws -> FetchWeatherResponse {
         let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
         guard let requestString = self.encode(request: request) else {
