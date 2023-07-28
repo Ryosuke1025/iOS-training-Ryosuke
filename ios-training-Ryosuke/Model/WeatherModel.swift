@@ -7,40 +7,41 @@
 import YumemiWeather
 import Foundation
 
-protocol WeatherModelDelegate: AnyObject {
-    func didFetchWeatherCondition(weatherModel: WeatherModelProtocol, response: FetchWeatherResponse)
-    func failedFetchWeatherCondition(weatherModel: WeatherModelProtocol)
-}
-
 protocol WeatherModelProtocol {
-    var delegate: WeatherModelDelegate? {get set}
-    func fetchWeatherCondition()
+    func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void)
     func encode(request: FetchWeatherRequest) -> String?
     func decode(responseString: String) -> FetchWeatherResponse?
 }
 
+enum FetchWeatherConditionError: Error {
+    case decoding
+    case encoding
+    case unknown
+}
+
 final class WeatherModel: WeatherModelProtocol {
-    weak var delegate: WeatherModelDelegate?
     
-    func fetchWeatherCondition() {
+    func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void) {
         DispatchQueue.global().async {
             do {
                 let request = FetchWeatherRequest(area: "tokyo", date: "2020-04-01T12:00:00+09:00")
                 guard let requestString = self.encode(request: request) else {
                     assertionFailure("Encode Failed")
+                    completionHandler(.failure(FetchWeatherConditionError.decoding))
                     return
                 }
                 let responseString = try YumemiWeather.syncFetchWeather(requestString)
                 guard let response = self.decode(responseString: responseString) else {
                     assertionFailure("Decode Failed")
+                    completionHandler(.failure(FetchWeatherConditionError.encoding))
                     return
                 }
                 DispatchQueue.main.async {
-                    self.delegate?.didFetchWeatherCondition(weatherModel: self, response: response)
+                    completionHandler(.success(response))
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.delegate?.failedFetchWeatherCondition(weatherModel: self)
+                    completionHandler(.failure(FetchWeatherConditionError.unknown))
                 }
             }
         }
