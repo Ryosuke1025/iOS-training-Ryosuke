@@ -62,7 +62,6 @@ final class WeatherViewController: UIViewController {
         Task {
             await self.updateWeatherCondition()
         }
->>>>>>> a3a9f69 ([Fix] コールバックからconcurrencyに書き換え)
     }
     // swiftlint:enable private_action
     
@@ -76,24 +75,23 @@ final class WeatherViewController: UIViewController {
 
 extension WeatherViewController {
     func updateWeatherCondition() async {
-        do {
-            let response = try await weatherModel.fetchWeatherCondition()
-            self.weatherImage.image = UIImage(named: response.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-            switch response.weatherCondition {
-            case .sunny:
-                self.weatherImage.tintColor = .red
-            case .cloudy:
-                self.weatherImage.tintColor = .gray
-            case .rainy:
-                self.weatherImage.tintColor = .blue
-            }
-            self.maxTemperatureLabel.text = String(response.maxTemperature)
-            self.minTemperatureLabel.text = String(response.minTemperature)
-            self.indicator.stopAnimating()
-        } catch {
+        await weatherViewModel.fetchWeatherCondition()
+        if weatherViewModel.isError == true {
             let alertController = self.makeAlertController()
-            self.present(alertController, animated: true, completion: nil)
-            self.indicator.stopAnimating()
+            present(alertController, animated: true, completion: nil)
+        } else {
+            weatherImage.image = UIImage(named: weatherViewModel.weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
+            switch weatherViewModel.weatherCondition {
+            case .sunny:
+                weatherImage.tintColor = .red
+            case .cloudy:
+                weatherImage.tintColor = .gray
+            case .rainy:
+                weatherImage.tintColor = .blue
+            }
+            maxTemperatureLabel.text = String(weatherViewModel.maxTemperature)
+            minTemperatureLabel.text = String(weatherViewModel.minTemperature)
         }
+        indicator.stopAnimating()
     }
 }

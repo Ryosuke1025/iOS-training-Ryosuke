@@ -10,25 +10,25 @@ final class WeatherViewModel {
     var weatherCondition: WeatherCondition
     var maxTemperature: Int
     var minTemperature: Int
+    var isError: Bool
     
     init(weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel
         self.weatherCondition = .sunny
         self.maxTemperature = 0
         self.minTemperature = 0
+        self.isError = false
     }
     
-    func fetchWeatherCondition(completion: @escaping (Result<Void, Error>) -> Void) {
-        weatherModel.fetchWeatherCondition { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.weatherCondition = response.weatherCondition
-                self?.maxTemperature = response.maxTemperature
-                self?.minTemperature = response.minTemperature
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+    func fetchWeatherCondition() async {
+        do {
+            let response = try await weatherModel.fetchWeatherCondition()
+            weatherCondition = response.weatherCondition
+            maxTemperature = response.maxTemperature
+            minTemperature = response.minTemperature
+            isError = false
+        } catch {
+            isError = true
         }
     }
 }
