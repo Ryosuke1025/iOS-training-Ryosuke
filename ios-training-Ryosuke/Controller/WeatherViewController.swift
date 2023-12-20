@@ -74,7 +74,7 @@ final class WeatherViewController: UIViewController {
 }
 
 extension WeatherViewController {
-    func updateWeatherCondition() async 
+    func updateWeatherCondition() async {
         await weatherViewModel.fetchWeatherCondition()
         if weatherViewModel.isError == true {
             let alertController = self.makeAlertController()
