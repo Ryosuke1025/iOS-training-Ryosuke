@@ -4,21 +4,19 @@
 //
 //  Created by 須崎 良祐 on 2023/07/24.
 //
+import Combine
 import UIKit
+
 final class WeatherViewModel {
     
     private var weatherModel: WeatherModelProtocol
-    var weatherCondition: WeatherCondition
-    var maxTemperature: Int
-    var minTemperature: Int
-    var isError: Bool
-    
+    @Published var weatherCondition: WeatherCondition = .sunny
+    @Published var maxTemperature: Int = 0
+    @Published var minTemperature: Int = 0
+    @Published var isError: Bool = false
+
     init(weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel
-        self.weatherCondition = .sunny
-        self.maxTemperature = 0
-        self.minTemperature = 0
-        self.isError = false
     }
     
     func fetchWeatherCondition() async {
