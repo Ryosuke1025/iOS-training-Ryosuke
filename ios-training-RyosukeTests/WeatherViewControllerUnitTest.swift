@@ -7,16 +7,17 @@
 
 import XCTest
 @testable import ios_training_Ryosuke
+import Combine
 
 @MainActor
 final class WeatherViewControllerUnitTest: XCTestCase {
     
     var weatherViewController: WeatherViewController!
+    var weatherViewModel: WeatherViewModel!
     let mock = WeatherModelMock()
-    
+
     override func setUpWithError() throws {
-        let mock = WeatherModelMock()
-        let weatherViewModel = WeatherViewModel(weatherModel: mock)
+        weatherViewModel = WeatherViewModel(weatherModel: mock)
         weatherViewController = WeatherViewController.getInstance(weatherViewModel: weatherViewModel)
         weatherViewController.loadViewIfNeeded()
     }
@@ -36,13 +37,34 @@ final class WeatherViewControllerUnitTest: XCTestCase {
             mock.weatherCondition = weather.condition
             mock.maxTemp = weather.maxTemp
             mock.minTemp = weather.minTemp
+            
+            let expectation = XCTestExpectation(description: "Weather data updated for \(weather.condition)")
 
-            await weatherViewController.reload(UIButton())
-            Task {
-                XCTAssertEqual(weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
-                XCTAssertEqual(weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
-                XCTAssertEqual(weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
-            }
+            var cancellables = Set<AnyCancellable>()
+
+            await weatherViewModel.fetchWeatherCondition()
+
+            weatherViewModel.$weatherCondition
+                .sink { receivedCondition in
+                    XCTAssertEqual(receivedCondition, weather.condition)
+                    expectation.fulfill()
+                }
+                .store(in: &cancellables)
+
+            weatherViewModel.$maxTemperature
+                .sink { receivedTemp in
+                    XCTAssertEqual(receivedTemp, weather.maxTemp)
+                    expectation.fulfill()
+                }
+                .store(in: &cancellables)
+
+            weatherViewModel.$minTemperature
+                .sink { receivedTemp in
+                    XCTAssertEqual(receivedTemp, weather.minTemp)
+                    expectation.fulfill()
+                }
+                .store(in: &cancellables)
+
         }
     }
 }
