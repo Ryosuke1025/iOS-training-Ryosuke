@@ -42,62 +42,95 @@ final class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBindings()
+    }
+    
+    private func setupBindings() {
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
             .filter { [weak self] _ in self?.presentedViewController == nil }
             .sink { [weak self] _ in
-                self?.updateWeatherCondition()
+                Task {
+                    await self?.weatherViewModel.fetchWeatherCondition()
+                }
+            }
+            .store(in: &cancellables)
+
+        weatherViewModel.$weatherCondition
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] condition in
+                guard let self = self, let condition = condition else {
+                    self?.weatherImage.image = nil
+                    return
+                }
+                self.updateWeatherImage(for: condition)
+            }
+            .store(in: &cancellables)
+        
+        weatherViewModel.$maxTemperature
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] temp in
+                guard let self = self, let temp = temp else {
+                    self?.maxTemperatureLabel.text = "--"
+                    return
+                }
+                self.maxTemperatureLabel.text = "\(temp)"
+            }
+            .store(in: &cancellables)
+        
+        weatherViewModel.$minTemperature
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] temp in
+                guard let self = self, let temp = temp else {
+                    self?.minTemperatureLabel.text = "--"
+                    return
+                }
+                self.minTemperatureLabel.text = "\(temp)"
+            }
+            .store(in: &cancellables)
+        
+        weatherViewModel.$isError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isError in
+                if isError {
+                    guard let self = self else {
+                        return
+                    }
+                    self.present(self.makeAlertController(), animated: true, completion: nil)
+                }
             }
             .store(in: &cancellables)
     }
-    
+
     @IBAction private func close(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     // swiftlint:disable private_action
     @IBAction func reload(_ sender: Any) {
-        DispatchQueue.main.async {
-            self.indicator.startAnimating()
-            self.updateWeatherCondition()
+        indicator.startAnimating()
+        Task {
+            await weatherViewModel.fetchWeatherCondition()
+            self.indicator.stopAnimating()
         }
-        
     }
     // swiftlint:enable private_action
     
+    private func updateWeatherImage(for condition: WeatherCondition) {
+        weatherImage.image = UIImage(named: condition.rawValue)?.withRenderingMode(.alwaysTemplate)
+        switch condition {
+        case .sunny:
+            weatherImage.tintColor = .red
+        case .cloudy:
+            weatherImage.tintColor = .gray
+        case .rainy:
+            weatherImage.tintColor = .blue
+        }
+    }
+
     func makeAlertController() -> UIAlertController {
         let alertController = UIAlertController(title: "予期せぬエラー", message: "OKボタンを押して下さい", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(okAction)
         return alertController
-    }
-}
-
-extension WeatherViewController {
-    func updateWeatherCondition() {
-        weatherViewModel.fetchWeatherCondition { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    let weatherCondition = self.weatherViewModel.weatherCondition
-                    self.weatherImage.image = UIImage(named: weatherCondition.rawValue)?.withRenderingMode(.alwaysTemplate)
-                    switch weatherCondition {
-                    case .sunny:
-                        self.weatherImage.tintColor = .red
-                    case .cloudy:
-                        self.weatherImage.tintColor = .gray
-                    case .rainy:
-                        self.weatherImage.tintColor = .blue
-                    }
-                    self.maxTemperatureLabel.text = String(self.weatherViewModel.maxTemperature)
-                    self.minTemperatureLabel.text = String(self.weatherViewModel.minTemperature)
-                    self.indicator.stopAnimating()
-                    
-                case .failure:
-                    self.present(self.makeAlertController(), animated: true, completion: nil)
-                    self.indicator.stopAnimating()
-                }
-            }
-        }
     }
 }

@@ -8,7 +8,7 @@
 import XCTest
 @testable import ios_training_Ryosuke
 
-final class WeatherModelImplUnitTest: XCTestCase {
+final class WeatherModelUnitTest: XCTestCase {
     
     var weatherModel: WeatherModel!
     
