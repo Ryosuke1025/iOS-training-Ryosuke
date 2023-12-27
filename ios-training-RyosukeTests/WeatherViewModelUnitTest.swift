@@ -10,23 +10,20 @@ import XCTest
 import Combine
 
 @MainActor
-final class WeatherViewControllerUnitTest: XCTestCase {
-    
-    var weatherViewController: WeatherViewController!
+final class WeatherViewModelUnitTest: XCTestCase {
+
     var weatherViewModel: WeatherViewModel!
     let mock = WeatherModelMock()
 
     override func setUpWithError() throws {
         weatherViewModel = WeatherViewModel(weatherModel: mock)
-        weatherViewController = WeatherViewController.getInstance(weatherViewModel: weatherViewModel)
-        weatherViewController.loadViewIfNeeded()
     }
 
     override func tearDownWithError() throws {
-        weatherViewController  = nil
+        weatherViewModel = nil
     }
     
-    func testReload() async throws {
+    func testFetchWeatherCondition() async throws {
         let expectedWeather: [(condition: WeatherCondition, maxTemp: Int, minTemp: Int)] = [
             (.sunny, 7, 25),
             (.cloudy, 5, 20),
