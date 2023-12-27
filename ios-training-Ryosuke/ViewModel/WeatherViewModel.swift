@@ -10,10 +10,10 @@ import UIKit
 final class WeatherViewModel {
     
     private var weatherModel: WeatherModelProtocol
-    @Published var weatherCondition: WeatherCondition = .sunny
-    @Published var maxTemperature: Int = 0
-    @Published var minTemperature: Int = 0
-    @Published var isError: Bool = false
+    @Published var weatherCondition: WeatherCondition?
+    @Published var maxTemperature: Int?
+    @Published var minTemperature: Int?
+    @Published var isError = false
 
     init(weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel

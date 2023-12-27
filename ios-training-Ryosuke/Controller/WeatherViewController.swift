@@ -58,21 +58,33 @@ final class WeatherViewController: UIViewController {
         weatherViewModel.$weatherCondition
             .receive(on: DispatchQueue.main)
             .sink { [weak self] condition in
-                self?.updateWeatherImage(for: condition)
+                guard let self = self, let condition = condition else {
+                    self?.weatherImage.image = nil
+                    return
+                }
+                self.updateWeatherImage(for: condition)
             }
             .store(in: &cancellables)
         
         weatherViewModel.$maxTemperature
             .receive(on: DispatchQueue.main)
             .sink { [weak self] temp in
-                self?.maxTemperatureLabel.text = "\(temp)"
+                guard let self = self, let temp = temp else {
+                    self?.maxTemperatureLabel.text = "--"
+                    return
+                }
+                self.maxTemperatureLabel.text = "\(temp)"
             }
             .store(in: &cancellables)
         
         weatherViewModel.$minTemperature
             .receive(on: DispatchQueue.main)
             .sink { [weak self] temp in
-                self?.minTemperatureLabel.text = "\(temp)"
+                guard let self = self, let temp = temp else {
+                    self?.minTemperatureLabel.text = "--"
+                    return
+                }
+                self.minTemperatureLabel.text = "\(temp)"
             }
             .store(in: &cancellables)
         
@@ -80,8 +92,10 @@ final class WeatherViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isError in
                 if isError {
-                    let alertController = self?.makeAlertController()
-                    self?.present(alertController!, animated: true, completion: nil)
+                    guard let self = self else {
+                        return
+                    }
+                    self.present(self.makeAlertController(), animated: true, completion: nil)
                 }
             }
             .store(in: &cancellables)
