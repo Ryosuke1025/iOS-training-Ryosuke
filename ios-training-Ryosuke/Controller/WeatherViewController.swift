@@ -127,7 +127,7 @@ final class WeatherViewController: UIViewController {
         }
     }
 
-    func makeAlertController() -> UIAlertController {
+    private func makeAlertController() -> UIAlertController {
         let alertController = UIAlertController(title: "予期せぬエラー", message: "OKボタンを押して下さい", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default)
         alertController.addAction(okAction)
