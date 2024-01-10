@@ -15,10 +15,10 @@ protocol WeatherViewModelProtocol {
     var minTemperature: Int? {get}
     var isError: Bool {get}
 
-    var weatherConditionPublisher: Published<WeatherCondition?>.Publisher { get }
-    var maxTemperaturePublisher: Published<Int?>.Publisher { get }
-    var minTemperaturePublisher: Published<Int?>.Publisher { get }
-    var isErrorPublisher: Published<Bool>.Publisher { get }
+    var weatherConditionPublisher: AnyPublisher<WeatherCondition?, Never> { get }
+    var maxTemperaturePublisher: AnyPublisher<Int?, Never> { get }
+    var minTemperaturePublisher: AnyPublisher<Int?, Never> { get }
+    var isErrorPublisher: AnyPublisher<Bool, Never> { get }
 
     func fetchWeatherCondition() async
 }
@@ -32,10 +32,18 @@ final class WeatherViewModel: WeatherViewModelProtocol {
     @Published var minTemperature: Int?
     @Published var isError = false
 
-    var weatherConditionPublisher: Published<WeatherCondition?>.Publisher { $weatherCondition }
-    var maxTemperaturePublisher: Published<Int?>.Publisher { $maxTemperature }
-    var minTemperaturePublisher: Published<Int?>.Publisher { $minTemperature }
-    var isErrorPublisher: Published<Bool>.Publisher { $isError }
+    var weatherConditionPublisher: AnyPublisher<WeatherCondition?, Never> {
+        $weatherCondition.eraseToAnyPublisher()
+    }
+    var maxTemperaturePublisher: AnyPublisher<Int?, Never> {
+        $maxTemperature.eraseToAnyPublisher()
+    }
+    var minTemperaturePublisher: AnyPublisher<Int?, Never> {
+        $minTemperature.eraseToAnyPublisher()
+    }
+    var isErrorPublisher: AnyPublisher<Bool, Never> {
+        $isError.eraseToAnyPublisher()
+    }
 
     init(weatherModel: WeatherModelProtocol) {
         self.weatherModel = weatherModel
