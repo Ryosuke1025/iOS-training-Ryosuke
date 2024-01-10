@@ -10,6 +10,7 @@
 		E32EE1EA2A3FE6A600B15554 /* BlackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */; };
 		E32EE1EC2A40016F00B15554 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32EE1EB2A40016F00B15554 /* WeatherModel.swift */; };
 		E36ECD7E2A6E54DB00D95D65 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36ECD7D2A6E54DB00D95D65 /* WeatherViewModel.swift */; };
+		E38DDB4D2B3BD00F00819AA0 /* WeatherViewControllerUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38DDB4C2B3BD00F00819AA0 /* WeatherViewControllerUnitTest.swift */; };
 		E3A4151C2A36C1460012E264 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151B2A36C1460012E264 /* AppDelegate.swift */; };
 		E3A4151E2A36C1460012E264 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151D2A36C1460012E264 /* SceneDelegate.swift */; };
 		E3A415202A36C1460012E264 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A4151F2A36C1460012E264 /* WeatherViewController.swift */; };
@@ -37,6 +38,7 @@
 		E32EE1E92A3FE6A600B15554 /* BlackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlackViewController.swift; path = ../Controller/BlackViewController.swift; sourceTree = "<group>"; };
 		E32EE1EB2A40016F00B15554 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		E36ECD7D2A6E54DB00D95D65 /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		E38DDB4C2B3BD00F00819AA0 /* WeatherViewControllerUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewControllerUnitTest.swift; sourceTree = "<group>"; };
 		E3A415182A36C1460012E264 /* ios-training-Ryosuke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-training-Ryosuke.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A4151B2A36C1460012E264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3A4151D2A36C1460012E264 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B137482A52772C00CEB5C5 /* WeatherViewModelUnitTest.swift */,
+				E38DDB4C2B3BD00F00819AA0 /* WeatherViewControllerUnitTest.swift */,
 				E3B1374F2A52894500CEB5C5 /* WeatherModelUnitTest.swift */,
 			);
 			path = "ios-training-RyosukeTests";
@@ -302,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3B137502A52894500CEB5C5 /* WeatherModelUnitTest.swift in Sources */,
+				E38DDB4D2B3BD00F00819AA0 /* WeatherViewControllerUnitTest.swift in Sources */,
 				E3B137492A52772C00CEB5C5 /* WeatherViewModelUnitTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

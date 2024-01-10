@@ -15,11 +15,11 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var minTemperatureLabel: UILabel!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
     
-    private var weatherViewModel: WeatherViewModel
+    private var weatherViewModel: WeatherViewModelProtocol
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init?(coder: NSCoder, weatherViewModel: WeatherViewModel) {
+    init?(coder: NSCoder, weatherViewModel: WeatherViewModelProtocol) {
         self.weatherViewModel = weatherViewModel
         super.init(coder: coder)
     }
@@ -32,7 +32,7 @@ final class WeatherViewController: UIViewController {
         print("WeatherViewController is deinit")
     }
     
-    static func getInstance(weatherViewModel: WeatherViewModel) -> WeatherViewController? {
+    static func getInstance(weatherViewModel: WeatherViewModelProtocol) -> WeatherViewController? {
         let storyboard = UIStoryboard(name: "WeatherView", bundle: nil)
         let weatherViewController = storyboard.instantiateInitialViewController { coder in
             WeatherViewController(coder: coder, weatherViewModel: weatherViewModel)
@@ -55,7 +55,7 @@ final class WeatherViewController: UIViewController {
             }
             .store(in: &cancellables)
 
-        weatherViewModel.$weatherCondition
+        weatherViewModel.weatherConditionPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] condition in
                 guard let self = self, let condition = condition else {
@@ -66,7 +66,7 @@ final class WeatherViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        weatherViewModel.$maxTemperature
+        weatherViewModel.maxTemperaturePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] temp in
                 guard let self = self, let temp = temp else {
@@ -77,7 +77,7 @@ final class WeatherViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        weatherViewModel.$minTemperature
+        weatherViewModel.minTemperaturePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] temp in
                 guard let self = self, let temp = temp else {
@@ -88,7 +88,7 @@ final class WeatherViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        weatherViewModel.$isError
+        weatherViewModel.isErrorPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isError in
                 if isError {

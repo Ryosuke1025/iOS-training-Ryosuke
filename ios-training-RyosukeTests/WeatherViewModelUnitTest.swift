@@ -24,7 +24,7 @@ final class WeatherViewModelUnitTest: XCTestCase {
     }
     
     func testFetchWeatherCondition() async throws {
-        let expectedWeather: [(condition: WeatherCondition, maxTemp: Int, minTemp: Int)] = [
+        let expectedWeather: [(condition: WeatherCondition, maxTemperature: Int, minTemperature: Int)] = [
             (.sunny, 7, 25),
             (.cloudy, 5, 20),
             (.rainy, 0, 15)
@@ -32,9 +32,9 @@ final class WeatherViewModelUnitTest: XCTestCase {
         
         for weather in expectedWeather {
             mock.weatherCondition = weather.condition
-            mock.maxTemp = weather.maxTemp
-            mock.minTemp = weather.minTemp
-            
+            mock.maxTemperature = weather.maxTemperature
+            mock.minTemperature = weather.minTemperature
+
             let expectation = XCTestExpectation(description: "Weather data updated for \(weather.condition)")
 
             var cancellables = Set<AnyCancellable>()
@@ -50,14 +50,14 @@ final class WeatherViewModelUnitTest: XCTestCase {
 
             weatherViewModel.$maxTemperature
                 .sink { receivedTemp in
-                    XCTAssertEqual(receivedTemp, weather.maxTemp)
+                    XCTAssertEqual(receivedTemp, weather.maxTemperature)
                     expectation.fulfill()
                 }
                 .store(in: &cancellables)
 
             weatherViewModel.$minTemperature
                 .sink { receivedTemp in
-                    XCTAssertEqual(receivedTemp, weather.minTemp)
+                    XCTAssertEqual(receivedTemp, weather.minTemperature)
                     expectation.fulfill()
                 }
                 .store(in: &cancellables)
@@ -68,11 +68,11 @@ final class WeatherViewModelUnitTest: XCTestCase {
 
 class WeatherModelMock: WeatherModelProtocol {
     var weatherCondition: WeatherCondition!
-    var maxTemp: Int!
-    var minTemp: Int!
-    
+    var maxTemperature: Int!
+    var minTemperature: Int!
+
     func fetchWeatherCondition() async throws -> FetchWeatherResponse {
-        return .init(maxTemperature: maxTemp, date:"2020-04-01T12:00:00+09:00" , minTemperature: minTemp, weatherCondition: weatherCondition)
+        return .init(maxTemperature: maxTemperature, date:"2020-04-01T12:00:00+09:00" , minTemperature: minTemperature, weatherCondition: weatherCondition)
     }
     
     func encode(request: FetchWeatherRequest) -> String? {
