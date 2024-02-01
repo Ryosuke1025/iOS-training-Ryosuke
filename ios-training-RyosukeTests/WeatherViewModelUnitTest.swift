@@ -44,7 +44,7 @@ final class WeatherViewModelUnitTest: XCTestCase {
     }
 }
 
-class WeatherModelMock: WeatherModelProtocol {
+final class WeatherModelMock: WeatherModelProtocol {
     var weatherCondition: WeatherCondition!
     var maxTemperature: Int!
     var minTemperature: Int!

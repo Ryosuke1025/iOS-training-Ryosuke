@@ -65,7 +65,7 @@ final class WeatherViewControllerUnitTest: XCTestCase {
     }
 }
 
-class WeatherViewModelMock: WeatherViewModelProtocol {
+final class WeatherViewModelMock: WeatherViewModelProtocol {
 
     @Published var weatherCondition: WeatherCondition?
     @Published var maxTemperature: Int?
