@@ -1,65 +1,89 @@
 //
-//  ios_training_RyosukeTests.swift
+//  WeatherViewControllerUnitTest.swift
 //  ios-training-RyosukeTests
 //
-//  Created by 須崎 良祐 on 2023/07/03.
+//  Created by 須崎 良祐 on 2023/12/27.
 //
 
 import XCTest
 @testable import ios_training_Ryosuke
+import UIKit
+import Combine
 
+@MainActor
 final class WeatherViewControllerUnitTest: XCTestCase {
-    
     var weatherViewController: WeatherViewController!
-    let mock = WeatherModelMock()
-    
+    let mock = WeatherViewModelMock()
+
     override func setUpWithError() throws {
-        let mock = WeatherModelMock()
-        let weatherViewModel = WeatherViewModel(weatherModel: mock)
-        weatherViewController = WeatherViewController.getInstance(weatherViewModel: weatherViewModel)
+        weatherViewController = WeatherViewController.getInstance(weatherViewModel: mock)
         weatherViewController.loadViewIfNeeded()
     }
 
     override func tearDownWithError() throws {
-        weatherViewController  = nil
+        weatherViewController = nil
     }
-    
-    func testReload() {
-        let expectedWeather: [(condition: WeatherCondition, maxTemp: Int, minTemp: Int)] = [
-            (.sunny, 7, 25),
-            (.cloudy, 5, 20),
-            (.rainy, 0, 15)
+
+    func testReload() async throws {
+        let expectedWeather: [(condition: WeatherCondition, maxTemperature: Int, minTemperature: Int, isError: Bool)] = [
+            (.sunny, 7, 25, false),
+            (.cloudy, -8, -1, false),
+            (.rainy, -5, 15, false)
         ]
-        
+
         for weather in expectedWeather {
+            var cancellables = Set<AnyCancellable>()
+
             mock.weatherCondition = weather.condition
-            mock.maxTemp = weather.maxTemp
-            mock.minTemp = weather.minTemp
+            mock.maxTemperature = weather.maxTemperature
+            mock.minTemperature = weather.minTemperature
+            mock.isError = weather.isError
+
             weatherViewController.reload(UIButton())
-            DispatchQueue.main.async {
-                XCTAssertEqual(self.weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue)?.withRenderingMode(.alwaysTemplate))
-                XCTAssertEqual(self.weatherViewController.maxTemperatureLabel.text, String(weather.maxTemp))
-                XCTAssertEqual(self.weatherViewController.minTemperatureLabel.text, String(weather.minTemp))
-            }
-            
+
+            mock.$weatherCondition
+                .dropFirst()
+                .sink { receivedCondition in
+                    XCTAssertEqual(self.weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue))
+                }
+                .store(in: &cancellables)
+
+            mock.$maxTemperature
+                .dropFirst()
+                .sink { receivedTemperature in
+                    XCTAssertEqual(self.weatherViewController.maxTemperatureLabel.text, String(weather.maxTemperature))
+                }
+                .store(in: &cancellables)
+
+            mock.$minTemperature
+                .dropFirst()
+                .sink { receivedTemperature in
+                    XCTAssertEqual(self.weatherViewController.minTemperatureLabel.text, String(weather.minTemperature))
+                }
+                .store(in: &cancellables)
         }
     }
 }
 
-class WeatherModelMock: WeatherModelProtocol {
-    var weatherCondition: WeatherCondition!
-    var maxTemp: Int!
-    var minTemp: Int!
+final class WeatherViewModelMock: WeatherViewModelProtocol {
+
+    @Published var weatherCondition: WeatherCondition?
+    @Published var maxTemperature: Int?
+    @Published var minTemperature: Int?
+    @Published var isError = false
     
-    func fetchWeatherCondition(completionHandler: @escaping (Result<FetchWeatherResponse, Error>) -> Void){
-        completionHandler(.success(.init(maxTemperature: maxTemp, date:"2020-04-01T12:00:00+09:00" , minTemperature: minTemp, weatherCondition: weatherCondition)))
+    var weatherConditionPublisher: AnyPublisher<WeatherCondition?, Never> {
+        $weatherCondition.eraseToAnyPublisher()
     }
-    
-    func encode(request: FetchWeatherRequest) -> String? {
-        return nil
+    var maxTemperaturePublisher: AnyPublisher<Int?, Never> {
+        $maxTemperature.eraseToAnyPublisher()
     }
-    
-    func decode(responseString: String) -> FetchWeatherResponse? {
-        return nil
+    var minTemperaturePublisher: AnyPublisher<Int?, Never> {
+        $minTemperature.eraseToAnyPublisher()
     }
+    var isErrorPublisher: AnyPublisher<Bool, Never> {
+        $isError.eraseToAnyPublisher()
+    }
+
+    func fetchWeatherCondition() async {}
 }
