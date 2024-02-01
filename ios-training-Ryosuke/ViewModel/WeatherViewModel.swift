@@ -8,8 +8,6 @@ import Combine
 import UIKit
 
 protocol WeatherViewModelProtocol {
-    var weatherModel: WeatherModelProtocol {get}
-    
     var weatherCondition: WeatherCondition? {get}
     var maxTemperature: Int? {get}
     var minTemperature: Int? {get}

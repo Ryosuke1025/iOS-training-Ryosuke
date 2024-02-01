@@ -7,14 +7,17 @@
 
 import XCTest
 @testable import ios_training_Ryosuke
+import UIKit
+import Combine
 
+@MainActor
 final class WeatherViewControllerUnitTest: XCTestCase {
-    
     var weatherViewController: WeatherViewController!
-    let mock = WeatherViewModelMock(weatherModel: WeatherModelMock())
-    
+    let mock = WeatherViewModelMock()
+
     override func setUpWithError() throws {
         weatherViewController = WeatherViewController.getInstance(weatherViewModel: mock)
+        weatherViewController.loadViewIfNeeded()
     }
 
     override func tearDownWithError() throws {
@@ -22,50 +25,65 @@ final class WeatherViewControllerUnitTest: XCTestCase {
     }
 
     func testReload() async throws {
-        let expectedWeather: [(condition: WeatherCondition, maxTemperature: Int, minTemperature: Int)] = [
-            (.sunny, 7, 25),
-            (.cloudy, 5, 20),
-            (.rainy, 0, 15)
+        let expectedWeather: [(condition: WeatherCondition, maxTemperature: Int, minTemperature: Int, isError: Bool)] = [
+            (.sunny, 7, 25, false),
+            (.cloudy, -8, -1, false),
+            (.rainy, -5, 15, false)
         ]
 
         for weather in expectedWeather {
+            var cancellables = Set<AnyCancellable>()
+
             mock.weatherCondition = weather.condition
             mock.maxTemperature = weather.maxTemperature
             mock.minTemperature = weather.minTemperature
+            mock.isError = weather.isError
 
-            await weatherViewController.reload(UIButton())
+            weatherViewController.reload(UIButton())
 
+            mock.$weatherCondition
+                .dropFirst()
+                .sink { receivedCondition in
+                    XCTAssertEqual(self.weatherViewController.weatherImage.image, UIImage(named: weather.condition.rawValue))
+                }
+                .store(in: &cancellables)
+
+            mock.$maxTemperature
+                .dropFirst()
+                .sink { receivedTemperature in
+                    XCTAssertEqual(self.weatherViewController.maxTemperatureLabel.text, String(weather.maxTemperature))
+                }
+                .store(in: &cancellables)
+
+            mock.$minTemperature
+                .dropFirst()
+                .sink { receivedTemperature in
+                    XCTAssertEqual(self.weatherViewController.minTemperatureLabel.text, String(weather.minTemperature))
+                }
+                .store(in: &cancellables)
         }
     }
 }
 
 class WeatherViewModelMock: WeatherViewModelProtocol {
 
-    var weatherModel: WeatherModelProtocol
-
     @Published var weatherCondition: WeatherCondition?
     @Published var maxTemperature: Int?
     @Published var minTemperature: Int?
     @Published var isError = false
     
-    var weatherConditionPublisher: Published<WeatherCondition?>.Publisher { $weatherCondition }
-    var maxTemperaturePublisher: Published<Int?>.Publisher { $maxTemperature }
-    var minTemperaturePublisher: Published<Int?>.Publisher { $minTemperature }
-    var isErrorPublisher: Published<Bool>.Publisher { $isError }
-
-    init(weatherModel: WeatherModelProtocol) {
-        self.weatherModel = weatherModel
+    var weatherConditionPublisher: AnyPublisher<WeatherCondition?, Never> {
+        $weatherCondition.eraseToAnyPublisher()
+    }
+    var maxTemperaturePublisher: AnyPublisher<Int?, Never> {
+        $maxTemperature.eraseToAnyPublisher()
+    }
+    var minTemperaturePublisher: AnyPublisher<Int?, Never> {
+        $minTemperature.eraseToAnyPublisher()
+    }
+    var isErrorPublisher: AnyPublisher<Bool, Never> {
+        $isError.eraseToAnyPublisher()
     }
 
-    func fetchWeatherCondition() async {
-        do {
-            let response = try await weatherModel.fetchWeatherCondition()
-            weatherCondition = response.weatherCondition
-            maxTemperature = response.maxTemperature
-            minTemperature = response.minTemperature
-            isError = false
-        } catch {
-            isError = true
-        }
-    }
+    func fetchWeatherCondition() async {}
 }
