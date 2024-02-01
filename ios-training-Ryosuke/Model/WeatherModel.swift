@@ -48,7 +48,7 @@ final class WeatherModel: WeatherModelProtocol {
     
     func decode(responseString: String) -> FetchWeatherResponse? {
         guard let responseData = responseString.data(using: .utf8),
-              let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData)else {
+              let response = try? JSONDecoder().decode(FetchWeatherResponse.self, from: responseData) else {
             return nil
         }
         return response
