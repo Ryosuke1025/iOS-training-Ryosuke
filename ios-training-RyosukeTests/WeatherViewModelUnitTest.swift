@@ -35,33 +35,11 @@ final class WeatherViewModelUnitTest: XCTestCase {
             mock.maxTemperature = weather.maxTemperature
             mock.minTemperature = weather.minTemperature
 
-            let expectation = XCTestExpectation(description: "Weather data updated for \(weather.condition)")
-
-            var cancellables = Set<AnyCancellable>()
-
             await weatherViewModel.fetchWeatherCondition()
-
-            weatherViewModel.$weatherCondition
-                .sink { receivedCondition in
-                    XCTAssertEqual(receivedCondition, weather.condition)
-                    expectation.fulfill()
-                }
-                .store(in: &cancellables)
-
-            weatherViewModel.$maxTemperature
-                .sink { receivedTemp in
-                    XCTAssertEqual(receivedTemp, weather.maxTemperature)
-                    expectation.fulfill()
-                }
-                .store(in: &cancellables)
-
-            weatherViewModel.$minTemperature
-                .sink { receivedTemp in
-                    XCTAssertEqual(receivedTemp, weather.minTemperature)
-                    expectation.fulfill()
-                }
-                .store(in: &cancellables)
-
+            
+            XCTAssertEqual(weatherViewModel.weatherCondition, weather.condition)
+            XCTAssertEqual(weatherViewModel.maxTemperature, weather.maxTemperature)
+            XCTAssertEqual(weatherViewModel.minTemperature, weather.minTemperature)
         }
     }
 }
